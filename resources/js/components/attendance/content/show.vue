@@ -10,8 +10,8 @@
                         <th class="text-left">
                             Employee
                         </th>
-                        <th class="text-center" v-for="(table,index) in tables" :key="index">
-                            {{table.no}}
+                        <th class="text-center" v-for="(table,index) in history" :key="index">
+                            {{table.day}}
                         </th>
                         </tr>
                     </thead>
@@ -19,13 +19,13 @@
                         <tr>
                             <td>Keyven Rosal</td>
                         <td 
-                        v-for="(table, index) in tables"
+                        v-for="(table, index) in history"
                         :key="index"
-                        :class="(table.content == null) ? 'grey' : ''"
                         >
-                        <span v-if="table.content == 1"><i class="fas fa-check" style="color:green"></i></span>
-                        <span v-if="table.content == 0"><i class="fas fa-times" style="color:red"></i></span>
-                        <span v-if="table.content == 2" class="gray"></span>
+                        <!-- :class="(table.content == null) ? 'grey' : ''" -->
+                        <span v-if="table.is_present == true"><i class="fas fa-check" style="color:green"></i></span>
+                        <span v-else-if="table.is_present == false"><i class="fas fa-times" style="color:red"></i></span>
+                        <span v-else class="gray"></span>
                         </td>
                         </tr>
                     </tbody>
@@ -87,170 +87,15 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'Show',
     mounted() {
-        this.getMyAttendance()
+        this.thisAttendance()
         this.todayAttendance()
+        this.numberOfDays()        
     },
     data() {
         return {
+            number_of_days: null,
             attendanceNow: [],
-            tables: [
-                {
-                    no: 1,
-                    name: 'Mark',
-                    content: null
-                },
-                {
-                    no: 2,
-                    name: 'Otto',
-                    content: 1
-                },
-                {
-                    no: 3,
-                    name: 'Test',
-                    content: 1
-                },
-                {
-                    no: 4,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 5,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 6,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 7,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 8,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 9,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 10,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 11,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 12,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 13,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 14,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 15,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 16,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 17,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 18,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 19,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 20,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 21,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 22,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 23,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 24,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 25,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 26,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 27,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 28,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 29,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 30,
-                    name: '',
-                    content: 0
-                },
-                {
-                    no: 31,
-                    name: '',
-                    content: 0
-                },
-                
-            ],
+            history: [],
         }
     },
     methods: {
@@ -258,6 +103,33 @@ export default {
             getMyAttendance: "getMyAttendance",
             getTodayAttendance: "getTodayAttendance"
         }),
+        numberOfDays() {
+            var date = new Date()
+            var month = date.getMonth()+1
+            var year = date.getFullYear()
+            this.number_of_days = new Date(year, month, 0).getDate()
+        },
+        thisAttendance() {
+            this.getMyAttendance()
+            .then(response => {
+                var i = 1;
+                for (i; i <= this.number_of_days; i++) {
+                    var val = response.filter(element => element.date == i)
+                    if(val[0] !== undefined) {
+                        this.history.push({
+                            day: i,
+                            is_present: val[0].is_present
+                        })
+                    } else {
+                        this.history.push({
+                            day: i,
+                            is_present: false
+                        })
+                    }
+                }
+                    console.log(this.history)
+            })
+        },
         todayAttendance() {
             this.$store.dispatch("getTodayAttendance")
             .then(response => {
