@@ -4,6 +4,12 @@
 
 		@include('includes.head')
 		
+        <style>
+        .main-logo {
+            height: 2.5rem;
+            width: 8rem;
+        }
+        </style>
 	</head>
 
 	<body class="hoversubmenu main-body app sidebar-mini">

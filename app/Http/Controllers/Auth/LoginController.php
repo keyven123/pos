@@ -7,6 +7,7 @@ use App\Models\LoginHistory;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,6 +62,9 @@ class LoginController extends Controller
                 'user_agent' => $ua
             ]);
             return redirect('/dashboard');
+        } else {
+            Auth::logout();
+            return Redirect::back()->withErrors(['These credentials do not match our records.']);
         }
 
 

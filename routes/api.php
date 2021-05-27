@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::group(['prefix' => 'attendance'], function () {
         Route::get('getTodayAttendance', [AttendanceController::class, 'getTodayAttendance']);
+        Route::get('getFirstAndLastRecord', [AttendanceController::class, 'getFirstAndLastRecord']);
+        Route::get('historyTable', [AttendanceController::class, 'historyTable']);
 
     });
     

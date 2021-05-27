@@ -116,16 +116,21 @@
 													<h2 style="color: black">Welcome back!</h2>
 												<!-- </div> -->
 													<h5 class="font-weight-semibold mb-4">Please {{ __('Login') }}</h5>
+                                                    @if($errors->any())
+														<div class="alert alert-danger">
+															<h4>{{$errors->first()}}</h4>
+														</div>
+														@endif
 													<form method="POST" action="{{ route('login') }}">
                                                     @csrf
 														<div class="form-group">
                                                             <label for="email">{{ __('E-Mail Address') }}</label> 
                                                             <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                                            @if($errors->any())
+                                                            <!-- @if($errors->any())
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{$errors->first()}}</strong>
                                                                 </span>
-                                                            @endif
+                                                            @endif -->
 														</div>
 														<div class="form-group">
                                                             <label for="password">{{ __('Password') }}</label> 

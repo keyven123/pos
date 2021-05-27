@@ -19,6 +19,8 @@ class CreateAttendancesTable extends Migration
             $table->dateTime('time_in');
             $table->dateTime('time_out')->nullable();
             $table->boolean('is_approved')->default(0);
+            $table->string('type')->nullable();
+            $table->boolean('is_claimed')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

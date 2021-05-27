@@ -50,7 +50,7 @@
             >
             <template v-slot:[`item.date_hire`]="{ item }">
                 <div class="d-flex">
-                    <div class="align-items-center h-100">{{item.date_hire|myDate}}</div>
+                    <div class="align-items-center h-100" v-if="item.date_hire">{{item.date_hire|myDate}}</div>
                 </div>
             </template>
             <template v-slot:[`item.created_at`]="{ item }">

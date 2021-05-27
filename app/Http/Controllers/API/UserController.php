@@ -46,6 +46,7 @@ class UserController extends Controller
     {
         $response = $this->updateOrCreateService->create($request->validated(), '\App\Models\User', 'User');
         $user = User::where(['username' => $request->username, 'email' => $request->email])->first();
+        $user->update(['password' => bcrypt($request->password)]);
         $user->assignRole($request->designation_id);
         return $response;
     }

@@ -3,14 +3,14 @@
     <div class="container-fluid">
         <div class="main-header-left ">
             <div class="responsive-logo">
-                <a href="index.html"><img src="../../assets/img/brand/logo.png" class="logo-1" alt="logo"></a>
-                <a href="index.html"><img src="../../assets/img/brand/logo-white.png" class="dark-logo-1" alt="logo"></a>
-                <a href="index.html"><img src="../../assets/img/brand/favicon.png" class="logo-2" alt="logo"></a>
-                <a href="index.html"><img src="../../assets/img/brand/favicon.png" class="dark-logo-2" alt="logo"></a>
+                <a href="#"><img src="../../assets/img/brand/logo.png" class="logo-1" alt="logo"></a>
+                <!-- <a href="#"><img src="../../assets/img/brand/logo-white.png" class="dark-logo-1" alt="logo"></a> -->
+                <a href="#"><img src="images/Jollitea.jpg" class="logo-2" alt="logo"></a>
+                <!-- <a href="#"><img src="../../assets/img/brand/favicon.png" class="dark-logo-2" alt="logo"></a> -->
             </div>
             <div class="app-sidebar__toggle" data-toggle="sidebar">
-                <a class="close-toggle" href="#"><i class="header-icon fe fe-align-left"></i></a>
-                <a class="open-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
+                <a class="close-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
+                <a class="open-toggle" href="#"><i class="header-icon fe fe-align-left"></i></a>
             </div>
             <!-- <div class="main-header-center ml-3 d-sm-none d-md-none d-lg-block">
                 <input class="form-control" placeholder="Search for anything..." type="search"> <button class="btn"><i class="fas fa-search d-none d-md-block"></i></button>
@@ -271,11 +271,11 @@
 						</form>
                     </div>
                 </div>
-                <div class="dropdown main-header-message right-toggle">
+                <!-- <div class="dropdown main-header-message right-toggle">
                     <a class="nav-link pr-0" data-toggle="sidebar-right" data-target=".sidebar-right">
                         <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                     </a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
