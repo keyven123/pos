@@ -14,6 +14,7 @@ use App\Http\Controllers\API\VariantController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IngredientController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PayrollController;
 use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\ProductComponentController;
 use App\Http\Controllers\API\ProfileController;
@@ -56,6 +57,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('getTodayAttendance', [AttendanceController::class, 'getTodayAttendance']);
         Route::get('getFirstAndLastRecord', [AttendanceController::class, 'getFirstAndLastRecord']);
         Route::get('historyTable', [AttendanceController::class, 'historyTable']);
+        Route::get('getAttendanceSummary', [AttendanceController::class, 'getAttendanceSummary']);
+        Route::put('resetTimeOut/{id}', [AttendanceController::class, 'resetTimeOut']);
 
     });
     
@@ -66,6 +69,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('getTableCarts', [DashboardController::class, 'getTableCarts']);
         Route::get('getAllInventory', [DashboardController::class, 'getAllInventory']);
         Route::get('getAllSparkLine', [DashboardController::class, 'getAllSparkLine']);
+    });
+
+    Route::group(['prefix' => 'employee'], function () {
+        Route::get('showPayrollHistory', [EmployeeController::class, 'showPayrollHistory']);
     });
     
     Route::apiResources([
@@ -86,5 +93,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         'profile' => ProfileController::class,
         'employee' => EmployeeController::class,
         'attendance' => AttendanceController::class,
+        'payroll' => PayrollController::class,
     ]);
 });

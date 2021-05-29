@@ -18,6 +18,7 @@ class UserRequest extends FormRequest
             'password' => 'required_without:id',
             'contact' => 'sometimes|min:10|max:10',
             'date_hire' => 'sometimes',
+            'rate' => 'sometimes',
         ];
     }
     public function messages()

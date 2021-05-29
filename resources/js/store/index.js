@@ -20,6 +20,7 @@ import authentication from './modules/authentication'
 import profile from './modules/profile'
 import employee from './modules/employee'
 import attendance from './modules/attendance'
+import payroll from './modules/payroll'
 
 Vue.use(Vuex);
 Vue.prototype.$http = Axios
@@ -60,7 +61,8 @@ export const store = new Vuex.Store({
         authentication,
         profile,
         employee,
-        attendance
+        attendance,
+        payroll
     }
 
 });

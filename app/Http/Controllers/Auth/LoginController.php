@@ -61,7 +61,10 @@ class LoginController extends Controller
                 'user_id' => $user->id,
                 'user_agent' => $ua
             ]);
-            return redirect('/dashboard');
+            if ($user->designation_id == 1) {
+                return redirect('/dashboard');
+            }
+            return redirect('/sales-pos');
         } else {
             Auth::logout();
             return Redirect::back()->withErrors(['These credentials do not match our records.']);

@@ -2,11 +2,13 @@ import axios from 'axios'
 
 const state = {
     attendance: {},
-    table_history: []
+    table_history: [],
+    summary: {}
 }
 const getters = {
     attendance: state => state.category,
     TableHistory: state => state.table_history,
+    summary: state => state.summary
 }
 
 const actions = {
@@ -18,8 +20,11 @@ const actions = {
         commit('setAttendance', response.data)
         return response.data
     },
-    async getTodayAttendance() {
-        const response = await axios.get('api/attendance/getTodayAttendance')
+    async getTodayAttendance({commit},payload) {
+        var config = {
+            params: payload
+        }
+        const response = await axios.get('api/attendance/getTodayAttendance', config)
         return response.data
     },
     async getFirstAndLastRecord({commit} ,payload) {
@@ -36,12 +41,25 @@ const actions = {
         const response = await axios.get('api/attendance/historyTable', config)
         commit("setTableHistory", response.data.data)
         return response.data
+    },
+    async createTimeIn({commit}, payload) {
+        const response = await axios.post('api/attendance', payload)
+        return response.data
+    },
+    async getAttendanceSummary({commit}, payload) {
+        var config = {
+            params: payload
+        }
+        const response = await axios.get('api/attendance/getAttendanceSummary', config)
+        commit("setSummary", response.data)
+        return response.data
     }
 }
 
 const mutations = {
     setAttendance: (state, attendance) => state.attendance = attendance,
     setTableHistory: (state, table_history) => state.table_history = table_history,
+    setSummary: (state, summary) => state.summary = summary,
 }
 
 export default {

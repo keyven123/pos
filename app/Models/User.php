@@ -45,4 +45,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Designation');
     }
+    public function attendances()
+    {
+        return $this->hasMany('App\Models\Attendance', 'user_id', 'id');
+    }
+    public function total_hours()
+    {
+        return $this->hasMany('App\Models\TotalUserTime');
+    }
+    public function payroll_lists()
+    {
+        return $this->hasMany('App\Models\PayrollList', 'user_id', 'id');
+    }
 }

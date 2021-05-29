@@ -58,10 +58,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-4">
-                <label class="col-form-label pt-0">Date hired</label>
-                    <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('date_hire')}" type="date" placeholder="Date hired" v-model="date_hire">
-                    <label v-if="errors.hasOwnProperty('date_hire')" class="text-danger">{{errors.date_hire[0]}}</label>
+                <div class="row">
+                    <div class="col-4">
+                    <label class="col-form-label pt-0">Rate</label>
+                        <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('rate')}" type="number" min="0" step="any" placeholder="Rate" v-model="rate">
+                        <label v-if="errors.hasOwnProperty('rate')" class="text-danger">{{errors.rate[0]}}</label>
+                    </div>
+                    <div class="col-4">
+                    <label class="col-form-label pt-0">Date hired</label>
+                        <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('date_hire')}" type="date" placeholder="Date hired" v-model="date_hire">
+                        <label v-if="errors.hasOwnProperty('date_hire')" class="text-danger">{{errors.date_hire[0]}}</label>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -103,6 +110,7 @@ export default {
             email: null,
             contact: null,
             date_hire: null,
+            rate: null,
             username: null,
             password: null,
             confirm_password: null,
@@ -127,6 +135,7 @@ export default {
                     email: this.email,
                     contact: this.contact,
                     date_hire: this.date_hire,
+                    rate: this.rate,
                     username: this.username,
                     password: this.password,
                 }
@@ -140,6 +149,7 @@ export default {
                         this.email =  null
                         this.contact =  null
                         this.date_hire =  null
+                        this.rate =  null
                         this.username =  null
                         this.password =  null
                         this.errors = {}

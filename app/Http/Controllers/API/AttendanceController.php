@@ -17,7 +17,8 @@ class AttendanceController extends Controller
     {
         $this->updateOrCreateService = $updateOrCreateService;
     }
-    public function getFirstAndLastRecord(Request $request) {
+    public function getFirstAndLastRecord(Request $request) 
+    {
         if ($request->id) {
             $id = $request->id;
         } else {
@@ -31,48 +32,60 @@ class AttendanceController extends Controller
     }
     public function index(Request $request)
     {
-        if ($request->startOfMonth) {
-            $date = substr($request->startOfMonth, 0, 7);
-            $startOfMonth = new Carbon($date."-"."01 "."00:00:00");
-            $pass_date = strtotime(substr($request->startOfMonth, 0, 9));
-            $total_days = cal_days_in_month(CAL_GREGORIAN, date('m', $pass_date), date('Y', $pass_date));
-            $endOfMonth = new Carbon($date."-".$total_days." "."23:59:59");
-        } else {
-            $startDate = Carbon::now();
-            $startOfMonth = $startDate->copy()->startOfMonth();
-            $endOfMonth = $startDate->copy()->endOfMonth();
-        }
-        $attendance =  Attendance::where('user_id', auth()->user()->id)
-        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->select('*', DB::raw("DATE_FORMAT(time_in, '%d') as formatted_time_in"))
-        ->get();
-        $array = array();
-        foreach ($attendance as $att) {
-            array_push($array, [
-                'is_present' => ($att->time_in ? true : false),
-                'date' => intval($att->formatted_time_in),
-                'is_approved' => $att->is_approved,
-                'time_in' => $att->time_in,
-                'time_out' => $att->time_out,
-                'type' => $att->type
+        try {
+            // dd($request->all());
+            if ($request->startOfMonth) {
+                $date = substr($request->startOfMonth, 0, 7);
+                $startOfMonth = new Carbon($date."-"."01 "."00:00:00");
+                $pass_date = strtotime(substr($request->startOfMonth, 0, 9));
+                $total_days = cal_days_in_month(CAL_GREGORIAN, date('m', $pass_date), date('Y', $pass_date));
+                $endOfMonth = new Carbon($date."-".$total_days." "."23:59:59");
+            } else {
+                $startDate = Carbon::now();
+                $startOfMonth = $startDate->copy()->startOfMonth();
+                $endOfMonth = $startDate->copy()->endOfMonth();
+            }
+            $attendance =  Attendance::where('user_id', $request->id)
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->select('*', DB::raw("DATE_FORMAT(time_in, '%d') as formatted_time_in"))
+            ->get();
+            $array = array();
+            foreach ($attendance as $att) {
+                array_push($array, [
+                    'is_present' => ($att->time_in ? true : false),
+                    'date' => intval($att->formatted_time_in),
+                    'is_approved' => $att->is_approved,
+                    'time_in' => $att->time_in,
+                    'time_out' => $att->time_out,
+                    'type' => $att->type
+                ]);
+            }
+            return $array;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'alert_type' => 'error',
+                'message' => 'Failed to update time-out',
+                'error' => $th->getMessage(),
+                'success' => false
             ]);
         }
-        return $array;
     }
 
-    public function getTodayAttendance()
+    public function getTodayAttendance(Request $request)
     {
+        // dd($request->all());
         $now = Carbon::now()->format('Y-m-d');
-        return Attendance::where('created_at', 'like', "%$now%")->first();
+        return Attendance::where('user_id', $request->id)->where('created_at', 'like', "%$now%")->first();
         
     }
 
     public function store(Request $request)
     {
         $request = [
-            'user_id' => auth()->user()->id,
+            'user_id' => $request->id,
             'time_in' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
+        // dd($request);
         return $this->updateOrCreateService->create($request, '\App\Models\Attendance', 'Attendance');
     }
 
@@ -83,8 +96,9 @@ class AttendanceController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         try {
-            $user = Attendance::where('user_id', auth()->user()->id)->latest()->first();
+            $user = Attendance::where('user_id', $request->id)->latest()->first();
             $time_in = Carbon::parse($user->time_in);
             $time_out = Carbon::parse();
             // $total_duration = $time_out->diffForHumans($time_in); // 10 Hrs after
@@ -96,15 +110,15 @@ class AttendanceController extends Controller
             } else {
                 $type = "Whole day";
             }
-            $request = [
+            $data = [
                 'time_out' => Carbon::now()->format('Y-m-d H:i:s'),
                 'type' => $type
             ];
-            $data = $this->updateOrCreateService->update($request, '\App\Models\Attendance', 'Attendance', $user->id);
+            $data = $this->updateOrCreateService->update($data, '\App\Models\Attendance', 'Attendance', $user->id);
             // dd($total_duration, $type, $data);
             if ($data['success'] == true) {
                 TotalUserTime::create([
-                    'user_id' => auth()->user()->id,
+                    'user_id' => $request->id,
                     'hours' => $total_duration
                 ]);
             }
@@ -113,10 +127,22 @@ class AttendanceController extends Controller
             return response()->json([
                 'alert_type' => 'error',
                 'message' => 'Failed to update time-out',
+                'error' => $th->getMessage(),
                 'success' => false
             ]);
         }
 
+    }
+
+    public function resetTimeOut(Request $request, $id)
+    {
+        $user = Attendance::where('user_id', $request->id)->latest()->first();
+        $request = [
+            'time_out' => null,
+            'type' => null
+        ];
+        return $this->updateOrCreateService->update($request, '\App\Models\Attendance', 'Attendance', $user->id);
+        // Attendance::where('user_id', $request['id'])->latest()->first()->update(['time_out' => null]);
     }
 
     public function historyTable(Request $request)
@@ -134,5 +160,15 @@ class AttendanceController extends Controller
             ->where('user_id', $id)
             ->orderBy('created_at', 'DESC')
             ->paginate($itemsPerPage);
+    }
+
+    public function getAttendanceSummary(Request $request)
+    {
+        return Attendance::where('user_id', $request->id)
+            ->select(DB::raw('COUNT(id) as total_working_days'),
+                DB::raw("COUNT(CASE WHEN type = 'Whole day' Then type END) as whole_day"),
+                DB::raw("COUNT(CASE WHEN type = 'Half day' Then type END) as half_day"),
+                DB::raw("COUNT(CASE WHEN type = 'Not counted' Then type END) as not_counted")
+            )->first();
     }
 }

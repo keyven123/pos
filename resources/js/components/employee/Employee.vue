@@ -9,7 +9,9 @@
                     v-if="active_component.component === component.component" 
                     :key="component.title" 
                     :is="component.component"
-                    @back="changePage">
+                    @back="changePage"
+                    @user="userInfo"
+                    :sendToChild="userData">
                 </component>
                 </template>
             </div>
@@ -21,14 +23,15 @@
 <script>
 import BreadCrumb from '../breadcrumb/BreadCrumb.vue'
 import List from './content/list.vue'
-// import Show from './content/show.vue'
+import Show from './content/show.vue'
+import History from './content/history.vue'
 export default {
     name: 'Employee',
     components:{
         BreadCrumb,
         List,
-        // Show,
-        // Attendance
+        Show,
+        History
     },
     mounted() {
         
@@ -40,21 +43,29 @@ export default {
                 title: 'List of Employee',
                 component: 'List'
             },
-            // {
-            //     title: 'Employee Details',
-            //     component: 'Show'
-            // },
+            {
+                title: 'Employee Details',
+                component: 'Show'
+            },
+            {
+                title: 'Payroll History',
+                component: 'History'
+            }
         ],
         active_component: 
             {
                 title: 'List of Category',
                 component: 'List'
-            }
+            },
+        userData: [],
         }
     },
     methods: {
         changePage(page) {
          this.active_component = this.components.find(component => (component.component) === page)
+        },
+        userInfo(user) {
+            this.userData = user
         },
     },
 }

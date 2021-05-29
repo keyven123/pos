@@ -49,30 +49,45 @@
                     </v-col>
                 </v-row>
             </div>
-            <div class="col-md-3">
-                <v-card-title>History</v-card-title>
-                <v-sheet tile height="54" class="d-flex">
-                <v-select
-                    v-model="month"
-                    :items="months"
-                    @change="changeMonth()"
-                    dense
-                    outlined
-                    hide-details
-                    class="ma-2"
-                    label="month"
-                ></v-select>
-                <v-select
-                    v-model="year"
-                    :items="years"
-                    @change="changeMonth()"
-                    dense
-                    outlined
-                    hide-details
-                    class="ma-2"
-                    label="year"
-                ></v-select>
-                </v-sheet>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <v-card-title>History</v-card-title>
+                        <v-sheet tile height="54" class="d-flex">
+                        <v-select
+                            v-model="month"
+                            :items="months"
+                            @change="changeMonth()"
+                            dense
+                            outlined
+                            hide-details
+                            class="ma-2"
+                            label="month"
+                        ></v-select>
+                        <v-select
+                            v-model="year"
+                            :items="years"
+                            @change="changeMonth()"
+                            dense
+                            outlined
+                            hide-details
+                            class="ma-2"
+                            label="year"
+                        ></v-select>
+                        </v-sheet>
+                    </div>
+                    <div class="col-md-7">
+                        <v-card-title>Legend</v-card-title>
+                            <div>
+                                <span> <i class="fas fa-check" style="color:green"></i> - Present</span>
+                                <span> <i class="fas fa-slash" style="color:red"></i> - Half day </span>
+                            </div>
+                            <div>
+                                <span> <i class="fas fa-times" style="color:red"></i> - Absent or no logs</span>
+                                <span> <i class="far fa-times-circle" style="color:red"></i> - Not counted or Logged in for less than 4 hours</span>
+                            </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12">
                 <v-card>
@@ -95,10 +110,11 @@
                             v-for="(table, index) in history"
                             :key="index"
                             >
+                            <span><i :class="attendanceClass(table)" :style="attendanceStyle(table)"></i></span>
                             <!-- :class="(table.content == null) ? 'grey' : ''" -->
-                            <span v-if="table.is_present == true"><i class="fas fa-check" style="color:green"></i></span>
+                            <!-- <span v-if="table.is_present == true"><i class="fas fa-check" style="color:green"></i></span>
                             <span v-else-if="table.is_present == false"><i class="fas fa-times" style="color:red"></i></span>
-                            <span v-else class="gray"></span>
+                            <span v-else class="gray"></span> -->
                             </td>
                             </tr>
                         </tbody>
@@ -107,39 +123,79 @@
                 </v-card>
             </div>
             <div class="col-md-12">
-                <v-card>
-                    <v-card-title>
-                        <h3>Login Histories</h3>
-                    </v-card-title>
-                    <v-data-table
-                        :headers="headers"
-                        :items="TableHistory"
-                        @pagination="paginate"
-                        :server-items-length="totalHistory"
-                        :options.sync="options"
-                        :loading="loading"
-                        :footer-props="{
-                            'items-per-page-options': listSize
-                        }"
-                    >
-                    <template v-slot:[`item.time_in`]="{ item }">
-                        <div class="d-flex">
-                            <div class="align-items-center">{{item.time_in|completeDate}}</div>
-                        </div>
-                    </template>
-                    <template v-slot:[`item.time_out`]="{ item }">
-                        <div class="d-flex">
-                            <div class="align-items-center">{{item.time_out|completeDate}}</div>
-                        </div>
-                    </template>
-                    <template v-slot:[`item.is_approved`]="{ item }">
-                        <div class="d-flex">
-                            <div class="align-items-center" v-if="item.is_approved == 0">No</div>
-                            <div class="align-items-center" v-if="item.is_approved == 1">Yes</div>
-                        </div>
-                    </template>
-                    </v-data-table>
-                </v-card>
+                <div class="row">
+                    <div class="col-md-4">
+                        <v-card>
+                            <v-card-title>
+                                <h3>Attendance Summary</h3>
+                            </v-card-title>
+                            <v-simple-table>
+                            <template v-slot:default>
+                            <tbody>
+                                <tr>
+                                <td>Total Working days</td>
+                                <td>{{summary.total_working_days}}</td>
+                                </tr>
+                                <tr>
+                                <td>Whole day</td>
+                                <td>{{summary.whole_day}}</td>
+                                </tr>
+                                <tr>
+                                <td>Half day</td>
+                                <td>{{summary.half_day}}</td>
+                                </tr>
+                                <tr>
+                                <td>Not counted</td>
+                                <td>{{summary.not_counted}}</td>
+                                </tr>
+                            </tbody>
+                            </template>
+                        </v-simple-table>
+                        </v-card>
+                    </div>
+                    <div class="col-md-8">
+                        <v-card>
+                            <v-card-title>
+                                <h3>Login Histories</h3>
+                            </v-card-title>
+                            <v-data-table
+                                :headers="headers"
+                                :items="TableHistory"
+                                @pagination="paginate"
+                                :server-items-length="totalHistory"
+                                :options.sync="options"
+                                :loading="loading"
+                                :footer-props="{
+                                    'items-per-page-options': listSize
+                                }"
+                            >
+                            <template v-slot:[`item.type`]="{ item }">
+                                <div class="d-flex">
+                                    <div class="align-items-center" v-if="!item.type">Ongoing</div>
+                                    <div class="align-items-center" v-if="item.type">{{item.type}}</div>
+                                </div>
+                            </template>
+                            <template v-slot:[`item.time_in`]="{ item }">
+                                <div class="d-flex">
+                                    <div class="align-items-center">{{item.time_in|completeDate}}</div>
+                                </div>
+                            </template>
+                            <template v-slot:[`item.time_out`]="{ item }">
+                                <div class="d-flex">
+                                    <div class="align-items-center" v-if="item.time_out">{{item.time_out|completeDate}}</div>
+                                    <div class="align-items-center" v-if="!item.time_out"></div>
+                                </div>
+                            </template>
+                            <template v-slot:[`item.is_approved`]="{ item }">
+                                <div class="d-flex">
+                                    <div class="align-items-center" v-if="item.is_approved == 0">No</div>
+                                    <div class="align-items-center" v-if="item.is_approved == 1">Yes</div>
+                                </div>
+                            </template>
+                            </v-data-table>
+                        </v-card>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
@@ -152,12 +208,20 @@ const today = new Date()
 export default {
     name: 'Show',
     mounted() {
-        this.$store.dispatch("authenticate")
-        this.thisAttendance()
-        this.todayAttendance()
-        this.numberOfDays()   
-        this.getFirstAndLast()
-        this.HistoryTable()
+        this.authenticate()
+            .then(response => {
+                this.auth = response.userAuthentication
+                var data = {
+                    id: this.auth.id
+                }
+                this.thisAttendance(data)
+                this.numberOfDays()   
+                this.getFirstAndLast(data)
+                this.HistoryTable(data)
+                this.todayAttendance(data)
+                this.$store.dispatch("getAttendanceSummary", data)
+            })
+        
     },
     data() {
         return {
@@ -197,10 +261,11 @@ export default {
             getMyAttendance: "getMyAttendance",
             getTodayAttendance: "getTodayAttendance",
             getFirstAndLastRecord: "getFirstAndLastRecord",
-            getHistoryTable: "getHistoryTable"
+            getHistoryTable: "getHistoryTable",
+            authenticate: "authenticate"
         }),
-        HistoryTable() {
-            this.getHistoryTable()
+        HistoryTable(data) {
+            this.getHistoryTable(data)
             .then(response => {
                 this.loading = false;
                 this.totalHistory = response.total;
@@ -219,10 +284,7 @@ export default {
                 })
             }
         },
-        getFirstAndLast() {
-            var data = {
-                id: this.auth.id
-            }
+        getFirstAndLast(data) {
             this.getFirstAndLastRecord(data)
             .then(response => {
                 if (response.data.first !== null) {
@@ -267,19 +329,21 @@ export default {
                     if(val[0] !== undefined) {
                         this.history.push({
                             day: i,
-                            is_present: val[0].is_present
+                            is_present: val[0].is_present,
+                            type: val[0].type
                         })
                     } else {
                         this.history.push({
                             day: i,
-                            is_present: false
+                            is_present: false,
+                            type: null
                         })
                     }
                 }
             })
         },
-        todayAttendance() {
-            this.$store.dispatch("getTodayAttendance")
+        todayAttendance(data) {
+            this.getTodayAttendance(data)
             .then(response => {
                 this.attendanceNow = response
             })
@@ -294,16 +358,28 @@ export default {
             confirmButtonText: 'Yes!'
             }).then((result) => {
             if (result.isConfirmed) {
-                axios.post('api/attendance')
+                var data = {
+                    id: this.auth.id
+                }
+                this.$store.dispatch("createTimeIn", data)
                 .then(response => {
-                    Swal.fire({
-                        icon: response.data.alert_type,
-                        title: 'Your time-in for today is ' + response.data.data.time_in,
-                        showConfirmButton: true,
-                    })
-                    this.todayAttendance()
-                    this.thisAttendance()
-                    this.getFirstAndLast()
+                    if (response.success) {
+                        Swal.fire({
+                            icon: response.data.alert_type,
+                            title: 'Your time-in for today is ' + response.data.time_in,
+                            showConfirmButton: true,
+                        })
+                        this.todayAttendance(data)
+                        this.thisAttendance(data)
+                        this.getFirstAndLast(data)
+                        this.HistoryTable(data)
+                    } else {
+                        Swal.fire({
+                            icon: response.data.alert_type,
+                            title: response.data.message,
+                            showConfirmButton: true,
+                        })
+                    }
                 })
               }
           })
@@ -318,24 +394,69 @@ export default {
             confirmButtonText: 'Yes!'
             }).then((result) => {
             if (result.isConfirmed) {
-                axios.put('api/attendance/1')
+                var data = {
+                    id: this.auth.id
+                }
+                axios.put('api/attendance/1', data)
                 .then(response => {
-                    Swal.fire({
-                        icon: response.data.alert_type,
-                        title: 'Your time-out for today is ' + response.data.data.time_out,
-                        showConfirmButton: true,
-                    })
-                    this.todayAttendance()
+                    if (response.data.success == true) {
+                        Swal.fire({
+                            icon: response.data.alert_type,
+                            title: 'Your time-out for today is ' + response.data.data.time_out,
+                            showConfirmButton: true,
+                        })
+                        this.todayAttendance(data)
+                        this.thisAttendance(data)
+                        this.getFirstAndLast(data)
+                        this.HistoryTable(data)
+                    } else {
+                        Swal.fire({
+                            icon: response.data.alert_type,
+                            title: response.data.message + " please click the time in first",
+                            showConfirmButton: true,
+                        })
+                    }
                 })
               }
           })
+        },
+        attendanceStyle(data) {
+            if (data.type == null) {
+                if (data.is_present) {
+                    return "color:green"
+                } else {
+                    return "color:red"
+                }
+            } else if (data.type == "Whole day") {
+                return "color:green"
+            } else if (data.type == "Half day") {
+                return "color:orange"
+            } else {
+                return "color:red"
+            }
+        },
+        attendanceClass(data) {
+            if (data.type == null) {
+                if (data.is_present) {
+                    return "fas fa-check"
+                } else {
+                    return "fas fa-times"
+                }
+            } else if (data.type == "Whole day") {
+                return "fas fa-check"
+            } else if (data.type == "Half day") {
+                return "fas fa-slash"
+            } else {
+                return "far fa-times-circle"
+            }
         }
     },
     computed: {
         ...mapGetters({
             attendance: "attendance",
             userAuthentication: "userAuthentication",
-            TableHistory: "TableHistory"
+            TableHistory: "TableHistory",
+            summary: "summary"
         }),
         timeInExist() {
             var hour = today.getHours()
@@ -355,7 +476,7 @@ export default {
             } else {
                 return false
             }
-        },
+        }
     }
 
 }

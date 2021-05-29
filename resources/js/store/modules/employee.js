@@ -2,11 +2,13 @@ import axios from 'axios'
 
 const state = {
     employees: [],
-    employee: {}
+    employee: {},
+    payroll_histories: []
 }
 const getters = {
     allEmployees: state => state.employees,
     employee: state => state.employee,
+    payrollHistories: state => state.payroll_histories,
 }
 
 const actions = {
@@ -23,7 +25,7 @@ const actions = {
         return response.data
     },
     async showEmployee({commit}, payload) {
-        return commit("setEmployee", payload)
+        commit("setEmployee", payload)
     },
     async updateEmployee({getters}, payload) {
         var employee = getters.employee
@@ -36,13 +38,22 @@ const actions = {
             commit("deleteEmployee", payload)
         }
         return response.data
+    },
+    async showPayrollHistory({commit}, payload) {
+        var config = {
+            params: payload
+        }
+        const response = await axios.get('api/employee/showPayrollHistory', config)
+        commit('setHistories', response.data.data)
+        return response.data
     }
 }
 
 const mutations = {
     setEmployees: (state, employees) => state.employees = employees,
     setEmployee: (state, employee) => state.employee = employee,
-    deleteEmployee: (state, employee) => state.employees = state.employees.filter(element => (element.id !== employee.id))
+    deleteEmployee: (state, employee) => state.employees = state.employees.filter(element => (element.id !== employee.id)),
+    setHistories: (state, payroll_histories) => state.payroll_histories = payroll_histories
 }
 
 export default {

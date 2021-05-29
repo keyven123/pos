@@ -29,6 +29,9 @@ class PermissionSeeder extends Seeder
             'sales-view', 'sales-create', 'sales-edit', 'sales-delete',
             'product-component-view', 'product-component-create', 'product-component-edit', 'product-component-delete',
             'ordering-view', 'ordering-create', 'ordering-edit', 'ordering-delete',
+            'employee-list-view', 'employee-list-create', 'employee-list-edit', 'employee-list-delete',
+            'attendance-view', 'attendance-create', 'attendance-edit', 'attendance-delete',
+            'payroll-view', 'payroll-create', 'payroll-edit', 'payroll-delete',
         ];
         foreach ($permission_name as $name) {
             Permission::create([
@@ -39,5 +42,6 @@ class PermissionSeeder extends Seeder
 
         $role = Role::findOrFail(1);
         $role->syncPermissions($permission_name);
+        
     }
 }

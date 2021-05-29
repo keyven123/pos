@@ -96,7 +96,7 @@
                         <span class="side-menu__label">Sales</span><i class="angle fe fe-chevron-down"></i>
                     </a>
                     <ul class="slide-menu">
-                        <li><a class=" side-menu-label1">Management</a></li>
+                        <li><a class=" side-menu-label1">Sales</a></li>
                         @can('sales-view')
                         <li><router-link class="slide-item" to="/sales-pos">Sales POS</router-link></li>
                         @endcan
@@ -123,6 +123,7 @@
                 </li>
                 @endcan
                 
+                @can('user-management-view', 'role-view', 'permission-view')
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.26 9L12 13.47 17.74 9 12 4.53z" opacity=".3"/><path d="M19.37 12.8l-7.38 5.74-7.37-5.73L3 14.07l9 7 9-7zM12 2L3 9l1.63 1.27L12 16l7.36-5.73L21 9l-9-7zm0 11.47L6.26 9 12 4.53 17.74 9 12 13.47z"/></svg>
@@ -141,6 +142,7 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z" opacity=".3"></path><path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path></svg>
@@ -149,6 +151,7 @@
                         <li><a class="side-menu-label1">Employee</a></li>
                         <li><router-link class="slide-item" to="/employee">Employee List</router-link></li>
                         <li><router-link class="slide-item" to="/attendance">Attendance</router-link></li>
+                        <li><router-link class="slide-item" to="/payroll">Payroll</router-link></li>
                     </ul>
                 </li>
                 <!-- <li class="slide">

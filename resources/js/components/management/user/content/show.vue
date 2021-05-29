@@ -58,10 +58,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-4">
-                <label class="col-form-label pt-0">Date hired</label>
-                    <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('date_hire')}" type="date" placeholder="Date hired" v-model="date_hire">
-                    <label v-if="errors.hasOwnProperty('date_hire')" class="text-danger">{{errors.date_hire[0]}}</label>
+                <div class="row">
+                    <div class="col-4">
+                    <label class="col-form-label pt-0">Rate</label>
+                        <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('rate')}" type="number" min="0" step="any" placeholder="Rate" v-model="rate">
+                        <label v-if="errors.hasOwnProperty('rate')" class="text-danger">{{errors.rate[0]}}</label>
+                    </div>
+                    <div class="col-4">
+                    <label class="col-form-label pt-0">Date hired</label>
+                        <input class="form-control" :class="{'is-invalid border border-danger': errors.hasOwnProperty('date_hire')}" type="date" placeholder="Date hired" v-model="date_hire">
+                        <label v-if="errors.hasOwnProperty('date_hire')" class="text-danger">{{errors.date_hire[0]}}</label>
+                    </div>
                 </div>
             </div>
             <div class="mb-3">
@@ -113,6 +120,7 @@ export default {
             designation_id: null,
             email: null,
             contact: null,
+            rate: null,
             date_hire: null,
             username: null,
             password: null,
@@ -134,6 +142,7 @@ export default {
             this.last_name = await this.user.last_name
             this.designation_id = await this.user.designation_id
             this.email = await this.user.email
+            this.rate = await this.user.rate
             this.username = await this.user.username
             this.contact = await this.user.contact
             this.date_hire = await this.user.date_hire
@@ -154,6 +163,7 @@ export default {
                     email: this.email,
                     contact: this.contact,
                     date_hire: this.date_hire,
+                    rate: this.rate,
                     username: this.username,
                     password: this.password
                 }

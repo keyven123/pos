@@ -4,17 +4,6 @@
         <v-card>
             <v-card-title>
                 <h3>List of Employee</h3>
-                <v-btn 
-                color="primary"
-                class="mb-2 ml-6"
-                fab
-                x-small
-                @click="showCreateForm"
-                >
-                <v-icon>
-                    mdi-plus
-                </v-icon>
-                </v-btn>
                 <v-spacer></v-spacer>
                 <v-text-field
                 v-model="search"
@@ -69,7 +58,7 @@
                     class="btn btn-primary btn-sm" @click="selectEmployee(item)"><i class="fas fa-eye"></i>
                 </button>
                 <button 
-                    class="btn btn-success btn-sm" ><i class="fas fa-edit"></i>
+                    class="btn btn-success btn-sm" @click="selectHistory(item)"><i class="fas fa-search-dollar"></i>
                 </button>
                 <!-- <button 
                     class="btn btn-danger btn-sm" 
@@ -101,6 +90,10 @@ data() {
                 value: 'name',
             },
             { text: 'Designation', value: 'designation.name' },
+            { text: 'Total working days', value: 'total_working_days' },
+            { text: 'Whole day', value: 'whole_day' },
+            { text: 'Half day', value: 'half_day' },
+            { text: 'Note counted', value: 'not_counted' },
             { text: 'Action', value: 'actions' },
             ],
         totalEmployees: 0,
@@ -156,8 +149,16 @@ methods: {
         this.showEmployee(employee)
         .then(() => {
             this.$emit("back", "Show");
+            this.$emit("user", employee);
         });
     },
+    selectHistory(employee) {
+        this.showEmployee(employee)
+        .then(() => {
+            this.$emit("back", "History");
+            this.$emit("user", employee);
+        });
+    }
     // deleteEmployee(employee) {
     //     Swal.fire({
     //         title: 'Are you sure?',

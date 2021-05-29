@@ -1,7 +1,6 @@
 import Vue from 'vue'
 
 import VueRouter from 'vue-router'
-
 import Dashboard from '../components/dashboard/Dashboard'
 import Product from '../components/product/Product'
 import Inventory from '../components/inventory/Inventory'
@@ -17,6 +16,8 @@ import ProductComponent from '../components/product_component/ProductComponent'
 import Profile from '../components/profile/Profile'
 import Employee from '../components/employee/Employee'
 import Attendance from '../components/attendance/Attendance'
+import Payroll from '../components/payroll/Payroll'
+import {store} from '../store'
 
 Vue.use(VueRouter)
 let routes = [
@@ -95,6 +96,11 @@ let routes = [
         component: Attendance,
         name: 'Attendance'
     },
+    {
+        path: '/payroll',
+        component: Payroll,
+        name: 'Payroll'
+    },
 
 ];
 
@@ -102,5 +108,18 @@ const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
 });
+
+// var token = localStorage.getItem('token')
+// if(token === null) {
+//     router.replace('login')
+// }
+// store.dispatch("authenticate")
+// .then(response => {
+//     if (response && response.userAuthentication.designation_id == 1) {
+//         router.replace('dashboard')
+//     } else {
+//         router.replace('sales-pos')
+//     }
+// })
 
 export default router

@@ -35,7 +35,12 @@ class UpdateOrCreateService
         if ($modelName == "Role") {
             $data->syncPermissions($request['permissions']);
         }
-        return ResponseMessage::createSuccess($modelName, $data);
+        if ($data && $id == null) {
+            return ResponseMessage::createSuccess($modelName, $data);
+        }
+        if ($data && $id) {
+            return ResponseMessage::updateSuccess($modelName, $data);
+        }
     }
     public function delete($id, $model, $modelName)
     {

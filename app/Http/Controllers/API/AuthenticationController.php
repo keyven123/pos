@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
-    public function authenticate()
+    public function authenticate(Request $request)
     {
-        return User::with(['roles.permissions'])->findOrFail(auth()->user()->id);
+        if ($request->id) {
+
+        } else {
+            return User::with(['roles.permissions'])->findOrFail(auth()->user()->id);
+        }
     }
 }
