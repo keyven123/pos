@@ -4,13 +4,15 @@
         <!-- The left half -->
         <div class="col-md-6 col-lg-6 col-xl-6 d-none d-md-flex">
             <div class="header-left">
-                <p class="text-white m-0" style="font-size: 70px;">PREPARING...</p>
+                <p class="text-white m-0" style="font-size: 80px;">PREPARING...</p>
             </div>
-            <div class="container pt-5">
-                <div class="flex-container row pt-5">
-                    <div class="flex-item" v-for="(queue, index) in preparing" :key="index">
-                        <div class="col-md-6 col-lg-6 col-xl-6">
-                            <p style="font-size: 60px; color: #005cb9"> {{refNo(queue)}},</p>
+            <div class="container" style="padding-top: 120px">
+                <div class="flex-container row">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-xl-6" v-for="(queue, index) in preparing" :key="index">
+                            <div class="flex-item">
+                                <p style="font-size: 75px; color: #005cb9"> {{refNo(queue)}},</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -21,13 +23,15 @@
             <div class="login py-2">
                 <!-- Demo content-->
                 <div class="header-right">
-                    <p class="text-white m-0" style="font-size: 70px;">Please Collect...</p>
+                    <p class="text-white m-0" style="font-size: 80px;">Please Collect...</p>
                 </div>
-                <div class="container pt-5">
-                    <div class="flex-container row pt-5">
-                        <div class="flex-item" v-for="(queue, index) in collecting" :key="index">
-                            <div class="col-md-6 col-lg-6 col-xl-6">
-                                <p style="font-size: 60px; color: green"> {{refNo(queue)}},</p>
+                <div class="container" style="padding-top: 120px">
+                    <div class="flex-container row">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-xl-6" v-for="(queue, index) in collecting" :key="index">
+                                <div class="flex-item">
+                                    <p style="font-size: 75px; color: green"> {{refNo(queue)}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

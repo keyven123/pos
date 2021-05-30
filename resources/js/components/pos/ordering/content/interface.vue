@@ -1,7 +1,7 @@
 <template>
   <div class="card">
       <div class="card-body">
-        <div class="card-title">Preparing: <span style="color:#005cb9">BLUE</span> , TO RECEIVE: <span style="color:green">GREEN</span></div>
+        <div class="card-title">Preparing: <span style="color:#005cb9">BLUE</span> , RECEIVING: <span style="color:green">GREEN</span></div>
         <v-row>
             <v-col
             v-for="d in data"
