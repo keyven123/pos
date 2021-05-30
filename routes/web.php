@@ -19,6 +19,7 @@ Route::get('/', function () {
     // return view('welcome');
 });
 
+Route::view('/queue', 'pages.queue.queue');
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('dashboard');

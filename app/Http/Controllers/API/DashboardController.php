@@ -25,18 +25,18 @@ class DashboardController extends Controller
             $endOfDay = $now->copy()->endOfDay();
 
             $order = DB::table('orders')->select(DB::raw('COUNT(id) as order_count'), DB::raw('SUM(amount) as today_earnings'))
-                ->where('status', 1)
+                ->where('status', 2)
                 ->whereBetween('created_at', [$startOfDay, $endOfDay])->first();
             $total = DB::table('cart_histories')
-                ->where('status', 1)
+                ->where('status', 2)
                 ->select(DB::raw('SUM(quantity) as product_sold'), DB::raw('SUM(price*quantity) as total_earnings'))
                 ->first();
 
-            $order_yesterday = DB::table('orders')->where('status', 1)->select(DB::raw('COUNT(id) as order_count'), DB::raw('SUM(amount) as today_earnings'))
+            $order_yesterday = DB::table('orders')->where('status', 2)->select(DB::raw('COUNT(id) as order_count'), DB::raw('SUM(amount) as today_earnings'))
                 ->whereBetween('created_at', [$startOfYesterday, $startOfDay])->first();
-            $total_last_month = DB::table('cart_histories')->where('status', 1)->select(DB::raw('SUM(quantity) as product_sold'), DB::raw('SUM(price*quantity) as total_earnings'))
+            $total_last_month = DB::table('cart_histories')->where('status', 2)->select(DB::raw('SUM(quantity) as product_sold'), DB::raw('SUM(price*quantity) as total_earnings'))
                 ->whereBetween('created_at', [$startOfLastMonth, $startOfMonth])->first();
-            $total_this_month = DB::table('cart_histories')->where('status', 1)->select(DB::raw('SUM(quantity) as product_sold'), DB::raw('SUM(price*quantity) as total_earnings'))
+            $total_this_month = DB::table('cart_histories')->where('status', 2)->select(DB::raw('SUM(quantity) as product_sold'), DB::raw('SUM(price*quantity) as total_earnings'))
                 ->whereBetween('created_at', [$startOfMonth, $endOfMonth])->first();
 
             return response()->json(compact('order', 'total', 'order_yesterday', 'total_last_month', 'total_this_month'));
@@ -68,7 +68,7 @@ class DashboardController extends Controller
                 $groupBy = "%Y";
             }
             $data = DB::table('cart_histories')
-                ->where('status', 1)
+                ->where('status', 2)
                 ->where('created_at', '>=', $filter)
                 ->select(
                     DB::raw("DATE_FORMAT(created_at, '$groupBy') as date"),
@@ -80,13 +80,13 @@ class DashboardController extends Controller
                 ->get();
             if ($request->type == 'Gross') {
                 $chart_data = array(array('Date', 'Sales'));
-                $total = DB::table('cart_histories')->where('status', 1)->select(DB::raw('SUM(price*quantity) as data'))->first();
+                $total = DB::table('cart_histories')->where('status', 2)->select(DB::raw('SUM(price*quantity) as data'))->first();
                 foreach ($data as $in) {
                     array_push($chart_data, [$in->date, floatval($in->amount)]);
                 }
             } else if ($request->type == 'Orders') {
                 $sold = DB::table('orders')
-                    ->where('status', 1)
+                    ->where('status', 2)
                     ->where('created_at', '>=', $filter)
                     ->select(
                         DB::raw("DATE_FORMAT(created_at, '$groupBy') as date"),
@@ -96,13 +96,13 @@ class DashboardController extends Controller
                     ->orderBy('date', 'ASC')
                     ->get();;
                 $chart_data = array(array('Date', 'Orders'));
-                $total = DB::table('orders')->where('status', 1)->select(DB::raw('COUNT(id) as data'))->first();
+                $total = DB::table('orders')->where('status', 2)->select(DB::raw('COUNT(id) as data'))->first();
                 foreach ($sold as $in) {
                     array_push($chart_data, [$in->date, intval($in->count_order)]);
                 }
             } else {
                 $chart_data = array(array('Date', 'Product Sold'));
-                $total = DB::table('cart_histories')->where('status', 1)->select(DB::raw('SUM(quantity) as data'))->first();
+                $total = DB::table('cart_histories')->where('status', 2)->select(DB::raw('SUM(quantity) as data'))->first();
                 foreach ($data as $in) {
                     array_push($chart_data, [$in->date, intval($in->quantity)]);
                 }
@@ -144,7 +144,7 @@ class DashboardController extends Controller
 
             if ($request->type == 'Item') {
                 $cart_histories = DB::table('cart_histories as ch')
-                    ->where('ch.status', 1)
+                    ->where('ch.status', 2)
                     ->whereBetween('ch.created_at', [$start, $end])
                     ->leftJoin('products as p', 'p.id', '=', 'ch.product_id')
                     ->select('p.name as name', DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
@@ -153,7 +153,7 @@ class DashboardController extends Controller
                     ->get();
             } else if ($request->type == 'Category') {
                 $cart_histories = DB::table('cart_histories as ch')
-                    ->where('ch.status', 1)
+                    ->where('ch.status', 2)
                     ->whereBetween('ch.created_at', [$start, $end])
                     ->leftJoin('products as p', 'p.id', '=', 'ch.product_id')
                     ->leftJoin('categories as c', 'c.id', '=', 'p.category_id')
@@ -163,7 +163,7 @@ class DashboardController extends Controller
                     ->get();
             } else {
                 $cart_histories = DB::table('cart_histories as ch')
-                    ->where('ch.status', 1)
+                    ->where('ch.status', 2)
                     ->whereBetween('ch.created_at', [$start, $end])
                     ->leftJoin('users as u', 'u.id', '=', 'ch.user_id')
                     ->select(DB::raw("CONCAT(u.first_name,' ',u.last_name) AS name"), DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
@@ -171,7 +171,7 @@ class DashboardController extends Controller
                     ->orderBy('total_sales', 'ASC')
                     ->get();
             }
-            $total2 = DB::table('cart_histories')->where('status', 1)->whereBetween('created_at', [$start, $end])->select(DB::raw('SUM(price*quantity) as data'))->first();
+            $total2 = DB::table('cart_histories')->where('status', 2)->whereBetween('created_at', [$start, $end])->select(DB::raw('SUM(price*quantity) as data'))->first();
 
             $chart_data2 = array(array($request->type, 'Total'));
             foreach ($cart_histories as $in) {
@@ -233,7 +233,7 @@ class DashboardController extends Controller
         $startOfDay = $now->copy()->startOfDay()->subday(20);
         $endOfDay = $now->copy()->endOfDay();
         $startOfWeek = $now->copy()->startOfWeek()->subWeek(20);
-        $daily = DB::table('orders')->where('status', 1)
+        $daily = DB::table('orders')->where('status', 2)
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
             ->select(DB::raw('SUM(amount) as amount'), DB::raw('COUNT(id) as count'), DB::raw("DATE_FORMAT(created_at, '%d') as date"))
             ->groupBy('date')->get();
@@ -244,7 +244,7 @@ class DashboardController extends Controller
             array_push($daily_earnings, intval($day->amount));
         }
 
-        $weekly = DB::table('cart_histories')->where('status', 1)
+        $weekly = DB::table('cart_histories')->where('status', 2)
             ->whereBetween('created_at', [$startOfWeek, $endOfDay])
             ->select(DB::raw('SUM(price*quantity) as amount'), DB::raw('SUM(quantity) as quantity'), DB::raw("DATE_FORMAT(created_at, '%U') as date"))
             ->groupBy('date')->get();

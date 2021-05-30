@@ -47,6 +47,13 @@
                     'items-per-page-options': listSize
                 }"
             >
+            <template v-slot:[`item.status`]="{ item }">
+                <div class="d-flex">
+                    <div class="align-items-center" style="color:#005cb9" v-if="item.status==0">Preparing</div>
+                    <div class="align-items-center" style="color:green" v-if="item.status==1">To Received</div>
+                    <div class="align-items-center" v-if="item.status==2">Success</div>
+                </div>
+            </template>
             <template v-slot:[`item.amount`]="{ item }">
                 <div class="d-flex">
                     <div class="align-items-center">{{item.amount|currency}}</div>
@@ -96,6 +103,7 @@ data() {
                 filterable: false,
                 value: 'ref_no',
             },
+            { text: 'Status', value: 'status' },
             { text: 'Amount', value: 'amount' },
             { text: 'Cashier', value: 'user.first_name' },
             { text: 'Created at', value: 'created_at' },

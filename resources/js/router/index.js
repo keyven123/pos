@@ -17,6 +17,7 @@ import Profile from '../components/profile/Profile'
 import Employee from '../components/employee/Employee'
 import Attendance from '../components/attendance/Attendance'
 import Payroll from '../components/payroll/Payroll'
+import Queue from '../components/queue/Queue'
 import {store} from '../store'
 
 Vue.use(VueRouter)
@@ -101,7 +102,6 @@ let routes = [
         component: Payroll,
         name: 'Payroll'
     },
-
 ];
 
 const router = new VueRouter({

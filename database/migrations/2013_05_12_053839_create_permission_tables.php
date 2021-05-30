@@ -42,6 +42,10 @@ class CreatePermissionTables extends Migration
             'name' => 'Administrator', 
             'guard_name' => 'web',
         ]);
+        Role::create([
+            'name' => 'Cashier', 
+            'guard_name' => 'web',
+        ]);
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames) {
             $table->unsignedBigInteger('permission_id');

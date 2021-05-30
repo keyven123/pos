@@ -24,6 +24,9 @@ class CreateDesignationsTable extends Migration
         Designation::create([
             'name' => 'Administrator', 
         ]);
+        Designation::create([
+            'name' => 'Cashier', 
+        ]);
     }
 
     /**

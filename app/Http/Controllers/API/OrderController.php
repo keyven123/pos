@@ -21,17 +21,19 @@ class OrderController extends Controller
     {
         if ($request->itemsPerPage == null) {
             $itemsPerPage = 10;
+        } else {
+            $itemsPerPage = $request->itemsPerPage;
         }
         return Order::with('cart_histories', 'cart_histories.variant', 'cart_histories.product')
-            ->where('status', 0)
-            ->orderBy('updated_at', 'ASC')
+            ->where('status', '<=', 1)
+            ->orderBy('id', 'ASC')
             ->paginate($itemsPerPage);
     }
-    public function doneOrder(Request $request)
+    public function doneOrder(Request $request, $id)
     {
-        DB::transaction(function() use ($request) {
-            Order::where('ref_no', $request->ref_no)->update(['status' => 1]);
-            CartHistory::where('ref_no', $request->ref_no)->update(['status' => 1]);
+        DB::transaction(function() use ($request, $id) {
+            Order::findOrFail($id)->update($request->all());
+            CartHistory::where('ref_no', $request->ref_no)->update(['status' => $request->status]);
         });
     }
     public function index(Request $request)

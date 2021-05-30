@@ -82,24 +82,16 @@ class PayrollController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function getPayroll(Request $request)
     {
-        //
+        if ($request->itemsPerPage) {
+            $itemsPerPage = $request->itemsPerPage;
+        }if ($request->itemsPerPage == null) {
+            $itemsPerPage = 10;
+        }
+        return PayrollList::where('payroll_id', $request->id)->with('user', 'payroll')->paginate($itemsPerPage);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //

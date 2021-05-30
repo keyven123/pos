@@ -43,33 +43,58 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    // public function login(Request $request)
+    // {
+    //     $this->validate(
+    //         $request, [
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //         ]
+    //     );
+
+    //     $user = User::where(['email' => $request->email])->first();
+
+    //     if (auth()->guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
+    //         Auth::login($user);
+    //         $ua = $request->server('HTTP_USER_AGENT');
+    //         LoginHistory::create([
+    //             'user_id' => $user->id,
+    //             'user_agent' => $ua
+    //         ]);
+    //         if ($user->designation_id == 1) {
+    //             return redirect('/dashboard');
+    //         }
+    //         return redirect('/sales-pos');
+    //     } else {
+    //         Auth::logout();
+    //         return Redirect::back()->withErrors(['These credentials do not match our records.']);
+    //     }
+
+
+    // }
     public function login(Request $request)
-    {
-        $this->validate(
-            $request, [
-            'email' => 'required|email',
+    {   
+        $input = $request->all();
+  
+        $this->validate($request, [
+            'username' => 'required',
             'password' => 'required',
-            ]
-        );
-
-        $user = User::where(['email' => $request->email])->first();
-
-        if (auth()->guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            Auth::login($user);
-            $ua = $request->server('HTTP_USER_AGENT');
-            LoginHistory::create([
-                'user_id' => $user->id,
-                'user_agent' => $ua
-            ]);
-            if ($user->designation_id == 1) {
+        ]);
+  
+        $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        if (auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
+        {
+            $user = User::where([$fieldType => $request->username])->first();
+            if ($user->designation_id === 1) {
                 return redirect('/dashboard');
             }
             return redirect('/sales-pos');
         } else {
-            Auth::logout();
-            return Redirect::back()->withErrors(['These credentials do not match our records.']);
+            return Redirect::back()
+                ->withErrors(['These credentials do not match our records.']);
         }
-
-
+          
     }
+
+
 }

@@ -397,7 +397,11 @@ export default {
                         this.getCarts()
                         })
                     } else {
-                        Swal.fire('Please check the amount received')
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Amount received',
+                            text: 'Please check the amount received and amount change'
+                        })
                     }
                 }
             })

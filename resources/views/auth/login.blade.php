@@ -109,7 +109,7 @@
 								<div class="row">
 									<div class="col-md-10 col-lg-10 col-xl-9 mx-auto">
 										<div class="card-sigin">
-											<div class="mb-5 d-flex"> <a href="/"><img src="images/jollitea-6.jpg" class="img-fluid" alt="pluckoo-logo"></a></div>
+											<div class="mb-5 d-flex"> <a href="/"><img src="images/jollitea-6.jpg" class="img-fluid" alt="Jollitea logo"></a></div>
 											<div class="card-sigin">
 												<div class="main-signup-header">
 												<!-- <div  class="d-flex justify-content-center"> -->
@@ -124,13 +124,13 @@
 													<form method="POST" action="{{ route('login') }}">
                                                     @csrf
 														<div class="form-group">
-                                                            <label for="email">{{ __('E-Mail Address') }}</label> 
-                                                            <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                                            <!-- @if($errors->any())
+                                                            <label for="email">{{ __('Username or E-Mail Address') }}</label> 
+                                                            <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                                            @if($errors->any())
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{$errors->first()}}</strong>
                                                                 </span>
-                                                            @endif -->
+                                                            @endif
 														</div>
 														<div class="form-group">
                                                             <label for="password">{{ __('Password') }}</label> 

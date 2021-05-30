@@ -1,45 +1,34 @@
 <template>
   <div class="card">
       <div class="card-body">
-          <div class="card-title">Preparing</div>
-          <v-card>
-            <v-item-group>
-                <v-container>
-                <v-row>
-                    <v-col
-                    v-for="d in data"
-                    :key="d.id"
-                    cols="12"
-                    :md="(d.length < 5) ? '4' : '3'"
-                    sm="6"
-                    >
-                    <v-item>
-                        <v-card
-                        :color="'primary'"
-                        class="d-flex align-center"
-                        dark
-                        height="250"
-                        @click="orderReceived(d.ref_no)"
-                        >
-                        <v-card-text>
-                        <h4 class="white--text d-flex align-items-start">Ref#: {{d.ref_no}}</h4>
-                        <v-row class="mx-0 my-2">
-                            <div class="white--text" v-for="(cart, index) in d.cart_histories" :key="index">
-                            <h4>{{cart.product.name}} {{cart.variant.variation_name}} {{cart.quantity}}x</h4>
-                            </div>
-                        </v-row>
-
-                        <div class="white--text my-4 subtitle-1 d-flex justify-content-end" text="20">
+        <div class="card-title">Preparing: <span style="color:#005cb9">BLUE</span> , TO RECEIVE: <span style="color:green">GREEN</span></div>
+        <v-row>
+            <v-col
+            v-for="d in data"
+            :key="d.id"
+            cols="12"
+            :md="(data.length < 5) ? '4' : '3'"
+            sm="6"
+            >
+            <a href="#">
+                <div :class="cardColor(d)" @click="orderReceived(d)">
+                    <div class="card-title">
+                        <h4 class="white--text">Ref#: {{d.ref_no}}</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="white--text p-0 m-0 d-flex justify-content-between" v-for="(cart, index) in d.cart_histories" :key="index">
+                            <div>{{cart.product.name}} </div>
+                            <div> {{cart.variant.variation_name }}  {{cart.quantity}}x</div>
+                        </div>
+                        <hr>
+                        <div class="white--text pt-3 subtitle-1 d-flex justify-content-end" text="20">
                             <h4><b>{{d.amount|currency}}</b></h4>
                         </div>
-                        </v-card-text>
-                        </v-card>
-                    </v-item>
-                    </v-col>
-                </v-row>
-                </v-container>
-            </v-item-group>
-          </v-card>
+                    </div>
+                </div>
+            </a>
+            </v-col>
+        </v-row>
       </div>
   </div>
 </template>
@@ -67,10 +56,11 @@ export default {
                 this.data = response.data
             })
         },
-        orderReceived(ref_no) {
+        orderReceived(item) {
+            console.log(item)
             Swal.fire({
             title: 'Are you sure?',
-            text: "Customer Received the order?",
+            text: (item.status==0) ? "Move to customer order collection?" : "Customer Received the order?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -78,21 +68,47 @@ export default {
             confirmButtonText: 'Yes!'
             }).then((result) => {
             if (result.isConfirmed) {
-                const data = {
-                    ref_no: ref_no,
-                }
-                this.$store.dispatch("createConsumedStocks", data)
-                this.doneOrder(data)
-                .then(response => {
-                    this.getOrders()
-                    Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Order Received!',
+                if (item.status == 0) {
+                    const data = {
+                        id: item.id,
+                        ref_no: item.ref_no,
+                        status: 1
+                    }
+                    this.doneOrder(data)
+                    .then(response => {
+                        this.getOrders()
+                        Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Order is ready to collect!',
+                        })
                     })
-                })
+                } else if (item.status == 1) {
+                    const data = {
+                        id: item.id,
+                        ref_no: item.ref_no,
+                        status: 2
+                    }
+                    this.$store.dispatch("createConsumedStocks", data)
+                    this.doneOrder(data)
+                    .then(response => {
+                        this.getOrders()
+                        Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Order Received!',
+                        })
+                    })
+                }
             }
         })
+        },
+        cardColor(item) {
+            if (item.status == 0) {
+                return 'card blue p-4'
+            } else {
+                return 'card green p-4'
+            }
         }
     },
     computed: {

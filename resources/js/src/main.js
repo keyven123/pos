@@ -33,6 +33,8 @@ Vue.filter("completeDate", function(created) {
 import VueGoogleCharts from 'vue-google-charts'
 Vue.use(VueGoogleCharts)
 
+Vue.component('queue', require('../components/queue/Queue.vue').default);
+
 const app = new Vue({
     store,
     router,

@@ -42,6 +42,20 @@ class PermissionSeeder extends Seeder
 
         $role = Role::findOrFail(1);
         $role->syncPermissions($permission_name);
+
+        $cashier_permissions = [
+            'product-view', 'product-create', 'product-edit',
+            'category-view', 'category-create', 'category-edit',
+            'inventory-view', 'inventory-create',
+            'ingredient-view', 'ingredient-create', 'ingredient-edit',
+            'order-view', 'order-create', 'order-edit', 'order-delete',
+            'sales-view', 'sales-create', 'sales-edit', 'sales-delete',
+            'product-component-view', 'product-component-create', 'product-component-edit',
+            'ordering-view', 'ordering-create', 'ordering-edit', 'ordering-delete',
+            'attendance-view', 'attendance-create', 'attendance-edit', 'attendance-delete',
+        ];
+        $cashier = Role::findOrFail(2);
+        $cashier->syncPermissions($cashier_permissions);
         
     }
 }

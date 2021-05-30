@@ -19,7 +19,6 @@ use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\ProductComponentController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\RoleController;
-use App\Http\Controllers\API\UnitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +48,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('showCart', [CartHistoryController::class, 'showCart']);
     Route::post('updateCart', [CartHistoryController::class, 'updateCart']);
     Route::post('updateOrder', [OrderController::class, 'updateOrder']);
-    Route::post('doneOrder', [OrderController::class, 'doneOrder']);
+    Route::put('doneOrder/{id}', [OrderController::class, 'doneOrder']);
     Route::get('authenticate', [AuthenticationController::class ,'authenticate']);
     Route::put('updateComponentIndividual/{id}', [ProductComponentController::class ,'updateComponentIndividual']);
 
@@ -70,9 +69,13 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('getAllInventory', [DashboardController::class, 'getAllInventory']);
         Route::get('getAllSparkLine', [DashboardController::class, 'getAllSparkLine']);
     });
-
+    
     Route::group(['prefix' => 'employee'], function () {
         Route::get('showPayrollHistory', [EmployeeController::class, 'showPayrollHistory']);
+    });
+
+    Route::group(['prefix' => 'payroll'], function () {
+        Route::get('getPayroll', [PayrollController::class, 'getPayroll']);
     });
     
     Route::apiResources([
@@ -82,7 +85,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         'category' => CategoryController::class,
         'variant' => VariantController::class,
         'inventory' => InventoryController::class,
-        'unit' => UnitController::class,
         'ingredient' => IngredientController::class,
         'role' => RoleController::class,
         'permission' => PermissionController::class,

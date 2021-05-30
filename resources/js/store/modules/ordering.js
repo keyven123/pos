@@ -17,7 +17,7 @@ const actions = {
         return response.data
     },
     async doneOrder({commit}, payload) {
-        const response = await axios.post('api/doneOrder', payload)
+        const response = await axios.put(`api/doneOrder/${payload.id}`, payload)
     }
 }
 

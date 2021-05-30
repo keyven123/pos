@@ -49,9 +49,9 @@
                     'items-per-page-options': listSize
                 }"
             >
-            <template v-slot:[`item.warning_level`]="{ item }">
+            <template v-slot:[`item.amount`]="{ item }">
                 <div class="d-flex">
-                    <div class="align-items-center">{{item.warning_level|unit}} {{item.unit}}</div>
+                    <div class="align-items-center">{{item.amount|currency}}</div>
                 </div>
             </template>
             <template v-slot:[`item.created_at`]="{ item }">
@@ -73,6 +73,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 export default {
+name: "List",
 mounted() {
     this.getPayrolls()
     this.$store.dispatch("authenticate")
@@ -148,6 +149,7 @@ methods: {
         this.showPayroll(payroll)
         .then(() => {
             this.$emit("back", "Show");
+            this.$emit("payroll", payroll);
         });
     },
 },

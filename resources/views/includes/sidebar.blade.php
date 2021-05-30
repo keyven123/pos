@@ -62,13 +62,12 @@
                     </ul> -->
                 </li>
                 @endcan
+                @can('product-view', 'product-component-view', 'ingredient-view')
                 <li class="slide">
-                    @can('product-view')
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3.31 11l2.2 8.01L18.5 19l2.2-8H3.31zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" opacity=".3"/><path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                         <span class="side-menu__label">Products</span><i class="angle fe fe-chevron-down"></i>
                     </a>
-                    @endcan
                     <ul class="slide-menu">
                         <li><a class=" side-menu-label1">Products</a></li>
                         @can('product-view')
@@ -82,6 +81,7 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
                 @can('order-view')
                 <li class="slide">
                     <router-link class="side-menu__item" data-toggle="slide" to="/order">
@@ -143,17 +143,26 @@
                     </ul>
                 </li>
                 @endcan
+                @can('employee-list-view', 'attendance-view', 'payroll-view')
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z" opacity=".3"></path><path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path></svg>
                         <span class="side-menu__label">Employee</span><i class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">
                         <li><a class="side-menu-label1">Employee</a></li>
+                        @can('employee-list-view')
                         <li><router-link class="slide-item" to="/employee">Employee List</router-link></li>
+                        @endcan
+                        @can('attendance-view')
                         <li><router-link class="slide-item" to="/attendance">Attendance</router-link></li>
+                        @endcan
+                        @can('payroll-view')
                         <li><router-link class="slide-item" to="/payroll">Payroll</router-link></li>
+                        @endcan
+                        <li><a class="slide-item" href="/queue" target="_blank">Queue</a></li>
                     </ul>
                 </li>
+                @endcan
                 <!-- <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5 0-.16-.08-.28-.14-.35-.41-.46-.63-1.05-.63-1.65 0-1.38 1.12-2.5 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 10 6.5 10s1.5.67 1.5 1.5S7.33 13 6.5 13zm3-4C8.67 9 8 8.33 8 7.5S8.67 6 9.5 6s1.5.67 1.5 1.5S10.33 9 9.5 9zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 6 14.5 6s1.5.67 1.5 1.5S15.33 9 14.5 9zm4.5 2.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z" opacity=".3"/><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.21-.64-1.67-.08-.09-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9zm4 13h-1.77c-1.38 0-2.5 1.12-2.5 2.5 0 .61.22 1.19.63 1.65.06.07.14.19.14.35 0 .28-.22.5-.5.5-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.14 8 7c0 2.21-1.79 4-4 4z"/><circle cx="6.5" cy="11.5" r="1.5"/><circle cx="9.5" cy="7.5" r="1.5"/><circle cx="14.5" cy="7.5" r="1.5"/><circle cx="17.5" cy="11.5" r="1.5"/></svg><span class="side-menu__label">Advanced UI</span><i class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">

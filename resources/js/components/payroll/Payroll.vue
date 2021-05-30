@@ -9,7 +9,9 @@
                     v-if="active_component.component === component.component" 
                     :key="component.title" 
                     :is="component.component"
-                    @back="changePage">
+                    @back="changePage"
+                    @payroll="payrollInfo"
+                    :sendToChild="payrollData">
                 </component>
                 </template>
             </div>
@@ -35,30 +37,34 @@ export default {
   data() {
     return {
       components: [
-         {
+        {
             title: 'List of Payroll',
             component: 'List'
-         },
-         {
+        },
+        {
             title: 'Create Payroll',
             component: 'Create'
-         },
-         {
+        },
+        {
             title: 'Edit Payroll',
             component: 'Show'
-         }
-      ],
-      active_component: 
-         {
+        }
+    ],
+    active_component: 
+        {
             title: 'List of Payroll',
             component: 'List'
-         }
+        },
+    payrollData: []
     }
   },
    methods: {
       changePage(page) {
-         this.active_component = this.components.find(component => (component.component) === page)
-      },
+            this.active_component = this.components.find(component => (component.component) === page)
+        },
+      payrollInfo(payroll) {
+            this.payrollData = payroll
+        },
    }
 
 }

@@ -5,6 +5,9 @@
             <div class="col-12 m-3 p-0">
                 <button class="btn btn-primary btn-sm" @click="$emit('back', 'List')"><i class="fas fa-arrow-left"></i></button>
             </div>
+            <div class="col-12">
+                <h4>{{sendToChild.first_name}} {{sendToChild.last_name}} Summary</h4>
+            </div>
             <div class="col-md-12">
                 <v-card-title>Attendance Check</v-card-title>
                 <!-- <v-btn 
