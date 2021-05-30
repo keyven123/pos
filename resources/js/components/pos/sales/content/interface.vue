@@ -306,7 +306,7 @@ export default {
                     products.forEach(product => {
                         this.filtered_products.push({product,flex:4,height:'200px'})
                     })
-                } else if(products.length = 4) {
+                } else if(products.length == 4) {
                     products.forEach(product => {
                         this.filtered_products.push({product,flex:3,height:'150px'})
                     })
@@ -367,7 +367,7 @@ export default {
             confirmButtonText: 'Yes!'
             }).then((result) => {
             if (result.isConfirmed) {
-                if(this.orders.length !== 0 && this.amount_received && this.amountChange >= 0) {
+                if(this.orders.length !== 0 && this.amount_received && this.change >= 0) {
                     var final_order = []
                     var cart_history = []
                     var ref_no = moment().format('MMDYYYYhmmss');
@@ -544,7 +544,13 @@ export default {
         },
         amountChange() {
             if (this.amount_received && this.total) {
-                return parseFloat(this.amount_received) - parseFloat(this.total)
+                var change = parseFloat(this.amount_received) - parseFloat(this.total)
+                if(change < 0) {
+                    this.change = change
+                    return 0
+                }
+                this.change = change
+                return change
             } else {
                 return 0
             }

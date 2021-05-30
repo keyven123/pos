@@ -2,16 +2,16 @@
   <div class="container-fluid">
     <div class="row no-gutter">
         <!-- The left half -->
-        <div class="col-md-6 col-lg-6 col-xl-6 d-none d-md-flex">
+        <div class="col-md-6 col-lg-6 col-xl-6 d-md-flex">
             <div class="header-left">
-                <p class="text-white m-0" style="font-size: 80px;">PREPARING...</p>
+                <p class="text-white m-0 queue-text-header">PREPARING...</p>
             </div>
-            <div class="container" style="padding-top: 120px">
-                <div class="flex-container row">
+            <div class="container ">
+                <div class="flex-container row padding-queue">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-xl-6" v-for="(queue, index) in preparing" :key="index">
                             <div class="flex-item">
-                                <p style="font-size: 75px; color: #005cb9"> {{refNo(queue)}},</p>
+                                <p class="queue-text" style="color: #005cb9"> {{refNo(queue)}},</p>
                             </div>
                         </div>
                     </div>
@@ -23,14 +23,14 @@
             <div class="login py-2">
                 <!-- Demo content-->
                 <div class="header-right">
-                    <p class="text-white m-0" style="font-size: 80px;">Please Collect...</p>
+                    <p class="text-white m-0 queue-text-header">Please Collect...</p>
                 </div>
-                <div class="container" style="padding-top: 120px">
-                    <div class="flex-container row">
+                <div class="container ">
+                    <div class="flex-container row padding-queue">
                         <div class="row">
                             <div class="col-md-6 col-lg-6 col-xl-6" v-for="(queue, index) in collecting" :key="index">
                                 <div class="flex-item">
-                                    <p style="font-size: 75px; color: green"> {{refNo(queue)}}</p>
+                                    <p class="queue-text" style="color: green"> {{refNo(queue)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -80,5 +80,25 @@ export default {
 </script>
 
 <style>
-
+.queue-text-header {
+    font-size: 80px;
+}
+.queue-text {
+    font-size: 75px;
+}
+.padding-queue {
+    padding-top: 120px;
+}
+@media only screen and (max-width: 768px) {
+    .queue-text-header {
+        font-size: 25px;
+    }
+    .queue-text {
+        font-size: 20px;
+    }
+    .padding-queue {
+        padding-top: 50px;
+    }
+  
+}
 </style>

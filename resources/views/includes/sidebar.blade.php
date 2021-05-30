@@ -103,6 +103,7 @@
                         @can('ordering-view')
                         <li><router-link class="slide-item" to="/orders-pos">Orders POS</router-link></li>
                         @endcan
+                        <li><a class="slide-item" href="/queue" target="_blank">Queue</a></li>
                     </ul>
                 </li>
                 @can('inventory-view')
@@ -159,7 +160,6 @@
                         @can('payroll-view')
                         <li><router-link class="slide-item" to="/payroll">Payroll</router-link></li>
                         @endcan
-                        <li><a class="slide-item" href="/queue" target="_blank">Queue</a></li>
                     </ul>
                 </li>
                 @endcan

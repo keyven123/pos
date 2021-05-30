@@ -175,7 +175,7 @@ class ProductSeeder extends Seeder
         ];
         $ingredients_L = [
             'Fructose', 'Wintermelon', 'Hazelnut', 'Mango', 'Strawberry', 'Tiramisu', 'Caramel', 'Green Apple',
-            'Orange', 'Honey Dew', 'Blueberry', 'Lemon', 'Fresh Mango', 'doreen'
+            'Orange', 'Honey Dew', 'Blueberry', 'Lemon', 'Fresh Mango', 'Doreen'
         ];
 
         foreach ($ingredients_kg as $in) {
