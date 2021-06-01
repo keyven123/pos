@@ -132,7 +132,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Keyven Rosal</td>
+                                <td>{{sendToChild.first_name}} {{sendToChild.last_name}}</td>
                             <td 
                             v-for="(table, index) in history"
                             :key="index"

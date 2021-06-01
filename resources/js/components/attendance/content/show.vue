@@ -105,7 +105,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Keyven Rosal</td>
+                                <td>{{auth.first_name}} {{auth.last_name}}</td>
                             <td 
                             v-for="(table, index) in history"
                             :key="index"

@@ -21,7 +21,7 @@
                             <div> {{cart.variant.variation_name }}  {{cart.quantity}}x</div>
                         </div>
                         <hr>
-                        <div class="white--text pt-3 subtitle-1 d-flex justify-content-end" text="20">
+                        <div class="white--text subtitle-1 d-flex justify-content-end" text="20">
                             <h4><b>{{d.amount|currency}}</b></h4>
                         </div>
                     </div>
@@ -105,9 +105,9 @@ export default {
         },
         cardColor(item) {
             if (item.status == 0) {
-                return 'card blue p-4'
+                return 'card blue px-3 pt-3 pb-0 m-0'
             } else {
-                return 'card green p-4'
+                return 'card green px-3 pt-3 pb-0 m-0'
             }
         }
     },

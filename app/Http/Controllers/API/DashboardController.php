@@ -150,6 +150,7 @@ class DashboardController extends Controller
                     ->select('p.name as name', DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
                     ->orderBy('total_sales', 'ASC')
+                    ->take(10)
                     ->get();
             } else if ($request->type == 'Category') {
                 $cart_histories = DB::table('cart_histories as ch')
@@ -160,6 +161,7 @@ class DashboardController extends Controller
                     ->select('c.name as name', DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
                     ->orderBy('total_sales', 'ASC')
+                    ->take(10)
                     ->get();
             } else {
                 $cart_histories = DB::table('cart_histories as ch')
@@ -169,13 +171,21 @@ class DashboardController extends Controller
                     ->select(DB::raw("CONCAT(u.first_name,' ',u.last_name) AS name"), DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
                     ->orderBy('total_sales', 'ASC')
+                    ->take(10)
                     ->get();
             }
             $total2 = DB::table('cart_histories')->where('status', 2)->whereBetween('created_at', [$start, $end])->select(DB::raw('SUM(price*quantity) as data'))->first();
 
             $chart_data2 = array(array($request->type, 'Total'));
+            $vowels = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
             foreach ($cart_histories as $in) {
-                array_push($chart_data2, [$in->name, intval($in->total_sales)]);
+                if ($request->type == 'Item') {
+                    $name = str_replace($vowels, "", $in->name);
+                    array_push($chart_data2, [$name, intval($in->total_sales)]);
+                } else {
+                    array_push($chart_data2, [$in->name, intval($in->total_sales)]);
+                }
+
             }
 
             return response()->json(compact('chart_data2', 'total2'));

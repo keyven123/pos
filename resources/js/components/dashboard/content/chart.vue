@@ -98,7 +98,7 @@
                             <label><span class="bg-primary"></span>{{type_filter2}}</label>
                         </div>
                     </div>
-                    <div id="bar" class="sales-bar mt-4">
+                    <div class="mt-4">
                         <template v-if="(chartData2.length == 1)">
                             <h3 class="pl-4 pt-2">No data</h3>
                             <GChart
@@ -143,7 +143,7 @@ export default {
             },
             chartDataOptions2: {
                 legend: { position: 'bottom', alignment: 'start' },
-                chartArea:{width:'85%', height: '68%'},
+                chartArea:{width:'85%', height: '55%'},
                 colors: ['#0162e8', '#22c02c', '#ee335e']
             },
             nochartData: [
@@ -187,8 +187,14 @@ export default {
             this.filter2 = {...this.filter2, type: this.type_filter2, date: this.date_filter2}
             this.getFilterData(this.filter2)
             .then(response => {
-                this.chartData2 = response.chart_data2
+                this.chartData2 = []
                 this.total2 = response.total2
+                var data = response.chart_data2
+                var colors = ['#FF0000','#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3', '#B87333', '#703593', '#76A7FA']
+                this.chartData2.push([data[0][0], data[0][1], { role: 'style' }])
+                for (var i = 1; i < data.length; i++) {
+                    this.chartData2.push([data[i][0], data[i][1], colors[i-1]])
+                }
             })
         }
     },

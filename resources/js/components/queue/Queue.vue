@@ -4,14 +4,14 @@
         <!-- The left half -->
         <div class="col-md-6 col-lg-6 col-xl-6 d-md-flex">
             <div class="header-left">
-                <p class="text-white m-0 queue-text-header">PREPARING...</p>
+                <p class="text-white m-0 queue-text-header">Preparing...</p>
             </div>
             <div class="container ">
                 <div class="flex-container row padding-queue">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-xl-6" v-for="(queue, index) in preparing" :key="index">
                             <div class="flex-item">
-                                <p class="queue-text" style="color: #005cb9"> {{refNo(queue)}},</p>
+                                <p class="queue-text" style="color: #005cb9"> {{refNo(queue)}}</p>
                             </div>
                         </div>
                     </div>

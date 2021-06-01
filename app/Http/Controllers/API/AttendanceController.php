@@ -35,16 +35,26 @@ class AttendanceController extends Controller
         try {
             // dd($request->all());
             if ($request->startOfMonth) {
-                $date = substr($request->startOfMonth, 0, 7);
-                $startOfMonth = new Carbon($date."-"."01 "."00:00:00");
-                $pass_date = strtotime(substr($request->startOfMonth, 0, 9));
-                $total_days = cal_days_in_month(CAL_GREGORIAN, date('m', $pass_date), date('Y', $pass_date));
-                $endOfMonth = new Carbon($date."-".$total_days." "."23:59:59");
+                $start = new Carbon($request->startOfMonth);
+                $startOfMonth = $start->copy()->startofDay()->addDay(1);
+                $endOfMonth = $startOfMonth->copy()->endOfMonth();
+                // dd($startOfMonth, $endOfMonth);
+                // $date = substr($request->startOfMonth, 0, 7);
+                // $startOfMonth = new Carbon($date."-"."01 "."00:00:00");
+                // $pass_date = strtotime(substr($request->startOfMonth, 0, 9));
+                // dd($pass_date);
+                // $total_days = cal_days_in_month(CAL_GREGORIAN, date('m', $pass_date), date('Y', $pass_date));
+                // $endOfMonth = new Carbon($date."-".$total_days." "."23:59:59");
             } else {
                 $startDate = Carbon::now();
                 $startOfMonth = $startDate->copy()->startOfMonth();
                 $endOfMonth = $startDate->copy()->endOfMonth();
             }
+
+            if (!$request->id) {
+                $request->id = auth()->user()->id;
+            }
+            // echo $startOfMonth, $endOfMonth;
             $attendance =  Attendance::where('user_id', $request->id)
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->select('*', DB::raw("DATE_FORMAT(time_in, '%d') as formatted_time_in"))
