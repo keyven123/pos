@@ -95,11 +95,13 @@
                     <div class="total-revenue">
                         <div>
                             <h4>{{total2.data|currency}}</h4>
-                            <label><span class="bg-primary"></span>{{type_filter2}}</label>
+                        </div>
+                        <div>
+                            <h4>{{type_filter2}}</h4>
                         </div>
                     </div>
                     <div class="mt-4">
-                        <template v-if="(chartData2.length == 1)">
+                        <template v-if="(chartData2.length == 1)" class="mt-2">
                             <h3 class="pl-4 pt-2">No data</h3>
                             <GChart
                             type="ColumnChart"
@@ -108,7 +110,7 @@
                         />
                         </template>
 
-                        <template v-if="(chartData2.length > 1)">
+                        <template v-if="(chartData2.length > 1)" class="mt-2">
                             <GChart
                             type="ColumnChart"
                             :data="chartData2"
@@ -142,8 +144,8 @@ export default {
                 colors: ['#22c02c','#0162e8', '#ee335e']
             },
             chartDataOptions2: {
-                legend: { position: 'bottom', alignment: 'start' },
-                chartArea:{width:'85%', height: '55%'},
+                legend: {position: 'none'},
+                chartArea:{width:'85%', height: '65%'},
                 colors: ['#0162e8', '#22c02c', '#ee335e']
             },
             nochartData: [

@@ -107,11 +107,12 @@
                         <v-card-title>Legend</v-card-title>
                             <div>
                                 <span> <i class="fas fa-check" style="color:green"></i> - Present | </span>
-                                <span> <i class="fas fa-slash" style="color:red"></i> - Half day | </span>
+                                <span> <i class="fas fa-slash" style="color:orange"></i> - Half day | </span>
+                                <span> <i class="fas fa-exclamation" style="color:orange"></i> - No time out | </span>
                             </div>
                             <div>
                                 <span> <i class="fas fa-times" style="color:red"></i> - Absent or no logs | </span>
-                                <span> <i class="far fa-times-circle" style="color:red"></i> - Not counted or logged in for less than 4 hours</span>
+                                <span> <i class="far fa-times-circle" style="color:red"></i> - Not counted or time in for less than 4 hours</span>
                             </div>
                     </div>
                 </div>
@@ -481,7 +482,11 @@ export default {
         attendanceStyle(data) {
             if (data.type == null) {
                 if (data.is_present) {
-                    return "color:green"
+                    if (data.time_out == null) {
+                        return "color:orange"
+                    } else {
+                        return "color:green"
+                    }
                 } else {
                     return "color:red"
                 }
@@ -496,7 +501,11 @@ export default {
         attendanceClass(data) {
             if (data.type == null) {
                 if (data.is_present) {
-                    return "fas fa-check"
+                    if (data.time_in && data.time_out) {
+                        return "fas fa-check"
+                    } else {
+                        return "fas fa-exclamation"
+                    }
                 } else {
                     return "fas fa-times"
                 }

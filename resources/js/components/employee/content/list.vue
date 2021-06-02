@@ -55,14 +55,14 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <button 
-                    class="btn btn-primary btn-sm" @click="selectEmployee(item)"><i class="fas fa-eye"></i>
+                    class="btn btn-primary btn-sm" title="Summary" @click="selectEmployee(item)"><i class="fas fa-eye"></i>
                 </button>
                 <button 
-                    class="btn btn-success btn-sm" @click="selectHistory(item)"><i class="fas fa-search-dollar"></i>
+                    class="btn btn-success btn-sm" title="Payroll History" @click="selectHistory(item)"><i class="fas fa-search-dollar"></i>
                 </button>
-                <!-- <button 
-                    class="btn btn-danger btn-sm" 
-                    @click="deleteEmployee(item)"><i class="fas fa-trash"></i></button> -->
+                <button 
+                    class="btn btn-danger btn-sm" title="Approval of Attendances" 
+                    @click="showApprovePage(item)"><i class="fas fa-calendar-check"></i></button>
             </template>
             </v-data-table>
         </v-card>
@@ -156,6 +156,13 @@ methods: {
         this.showEmployee(employee)
         .then(() => {
             this.$emit("back", "History");
+            this.$emit("user", employee);
+        });
+    },
+    showApprovePage(employee) {
+        this.showEmployee(employee)
+        .then(() => {
+            this.$emit("back", "Approve");
             this.$emit("user", employee);
         });
     }

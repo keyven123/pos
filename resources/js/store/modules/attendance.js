@@ -2,11 +2,13 @@ import axios from 'axios'
 
 const state = {
     attendance: {},
+    attendances: [],
     table_history: [],
     summary: {}
 }
 const getters = {
-    attendance: state => state.category,
+    attendance: state => state.attendance,
+    attendances: state => state.attendances,
     TableHistory: state => state.table_history,
     summary: state => state.summary
 }
@@ -18,6 +20,14 @@ const actions = {
         }
         const response = await axios.get(`api/attendance`, config)
         commit('setAttendance', response.data)
+        return response.data
+    },
+    async filterAttendances({commit} ,payload) {
+        var config = {
+            params: payload
+        }
+        const response = await axios.get('api/attendance/filterAttendances', config)
+        commit('setAttendances', response.data.data)
         return response.data
     },
     async getTodayAttendance({commit},payload) {
@@ -58,6 +68,7 @@ const actions = {
 
 const mutations = {
     setAttendance: (state, attendance) => state.attendance = attendance,
+    setAttendances: (state, attendances) => state.attendances = attendances,
     setTableHistory: (state, table_history) => state.table_history = table_history,
     setSummary: (state, summary) => state.summary = summary,
 }

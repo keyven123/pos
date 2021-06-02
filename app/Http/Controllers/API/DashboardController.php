@@ -245,8 +245,8 @@ class DashboardController extends Controller
         $startOfWeek = $now->copy()->startOfWeek()->subWeek(20);
         $daily = DB::table('orders')->where('status', 2)
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
-            ->select(DB::raw('SUM(amount) as amount'), DB::raw('COUNT(id) as count'), DB::raw("DATE_FORMAT(created_at, '%d') as date"))
-            ->groupBy('date')->get();
+            ->select(DB::raw('SUM(amount) as amount'), DB::raw('COUNT(id) as count'), DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as date"))
+            ->groupBy('date')->orderBy('date')->get();
         $daily_orders = array(0);
         $daily_earnings = array(0);
         foreach ($daily as $day) {
@@ -257,7 +257,7 @@ class DashboardController extends Controller
         $weekly = DB::table('cart_histories')->where('status', 2)
             ->whereBetween('created_at', [$startOfWeek, $endOfDay])
             ->select(DB::raw('SUM(price*quantity) as amount'), DB::raw('SUM(quantity) as quantity'), DB::raw("DATE_FORMAT(created_at, '%U') as date"))
-            ->groupBy('date')->get();
+            ->groupBy('date')->orderBy('date')->get();
         $weekly_quantity = array(0);
         $weekly_earnings = array(0);
         foreach ($weekly as $week) {

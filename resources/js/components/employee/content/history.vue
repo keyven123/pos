@@ -24,11 +24,6 @@
                     <div class="align-items-center">{{item.amount|currency}}</div>
                 </div>
             </template>
-            <template v-slot:[`item.full_name`]="{ item }">
-                <div class="d-flex">
-                    <div class="align-items-center">{{item.user.first_name}} {{item.user.last_name}}</div>
-                </div>
-            </template>
             <template v-slot:[`item.payroll_start`]="{ item }">
                 <div class="d-flex">
                     <div class="align-items-center">{{item.payroll_start|myDate}}</div>
@@ -68,12 +63,6 @@ data() {
         filter: {},
         first_load: true,
         headers: [
-            {
-                text: 'Ingredient name',
-                align: 'start',
-                filterable: false,
-                value: 'full_name',
-            },
             { text: 'Amount', value: 'amount' },
             { text: 'Payroll start', value: 'payroll_start' },
             { text: 'Payroll end', value: 'payroll_end' },

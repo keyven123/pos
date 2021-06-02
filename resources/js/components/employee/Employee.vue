@@ -25,13 +25,15 @@ import BreadCrumb from '../breadcrumb/BreadCrumb.vue'
 import List from './content/list.vue'
 import Show from './content/show.vue'
 import History from './content/history.vue'
+import Approve from './content/approve.vue'
 export default {
     name: 'Employee',
     components:{
         BreadCrumb,
         List,
         Show,
-        History
+        History,
+        Approve
     },
     mounted() {
         
@@ -50,6 +52,10 @@ export default {
             {
                 title: 'Payroll History',
                 component: 'History'
+            },
+            {
+                title: 'Approving of Attendance',
+                component: 'Approve'
             }
         ],
         active_component: 

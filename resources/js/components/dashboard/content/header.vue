@@ -53,7 +53,7 @@
                         <span class="float-right my-auto ml-auto">
                             <template v-if="earningsCompare > 0"><i class="fas fa-arrow-circle-up text-white"></i></template>
                             <template v-if="earningsCompare < 0"><i class="fas fa-arrow-circle-down text-white"></i></template>
-                            <span class="text-white op-7">{{earningsCompare}}</span>
+                            <span class="text-white op-7">{{earningsCompare|currency}}</span>
                         </span>
                     </div>
                 </div>

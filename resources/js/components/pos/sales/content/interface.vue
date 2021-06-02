@@ -393,6 +393,7 @@ export default {
                         title: response.message+' with RN# '+response.data.ref_no,
                         showConfirmButton: true,
                         })
+                        this.amount_received = 0
                         this.orders = []
                         this.getCarts()
                         })

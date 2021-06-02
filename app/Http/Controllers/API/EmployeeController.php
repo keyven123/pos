@@ -50,7 +50,7 @@ class EmployeeController extends Controller
         }if ($request->itemsPerPage == null) {
             $itemsPerPage = 10;
         }
-        return PayrollList::with(['user', 'payroll'])
+        return PayrollList::with('payroll')
             ->where('user_id', $request->id)
             ->orderBy('created_at', 'DESC')
             ->paginate($itemsPerPage);

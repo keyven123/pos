@@ -30,13 +30,14 @@ class AttendanceController extends Controller
             ->select(DB::raw("DATE_FORMAT(time_in, '%Y') as date"))->orderBy('date', 'DESC')->first();
         return response()->json(compact('first', 'last'));
     }
+
     public function index(Request $request)
     {
         try {
             // dd($request->all());
             if ($request->startOfMonth) {
                 $start = new Carbon($request->startOfMonth);
-                $startOfMonth = $start->copy()->startofDay()->addDay(1);
+                $startOfMonth = $start->copy()->startofMonth()->startOfDay();
                 $endOfMonth = $startOfMonth->copy()->endOfMonth();
                 // dd($startOfMonth, $endOfMonth);
                 // $date = substr($request->startOfMonth, 0, 7);
@@ -54,7 +55,7 @@ class AttendanceController extends Controller
             if (!$request->id) {
                 $request->id = auth()->user()->id;
             }
-            // echo $startOfMonth, $endOfMonth;
+
             $attendance =  Attendance::where('user_id', $request->id)
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->select('*', DB::raw("DATE_FORMAT(time_in, '%d') as formatted_time_in"))
@@ -62,6 +63,7 @@ class AttendanceController extends Controller
             $array = array();
             foreach ($attendance as $att) {
                 array_push($array, [
+                    'id' => $att->id,
                     'is_present' => ($att->time_in ? true : false),
                     'date' => intval($att->formatted_time_in),
                     'is_approved' => $att->is_approved,
@@ -74,8 +76,7 @@ class AttendanceController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'alert_type' => 'error',
-                'message' => 'Failed to update time-out',
-                'error' => $th->getMessage(),
+                'message' => $th->getMessage(),
                 'success' => false
             ]);
         }
@@ -180,5 +181,45 @@ class AttendanceController extends Controller
                 DB::raw("COUNT(CASE WHEN type = 'Half day' Then type END) as half_day"),
                 DB::raw("COUNT(CASE WHEN type = 'Not counted' Then type END) as not_counted")
             )->first();
+    }
+
+    public function filterAttendances(Request $request)
+    {
+        // dd($request->all());
+        try {
+            if ($request->startOfMonth) {
+                $start = new Carbon($request->startOfMonth);
+                $startOfMonth = $start->copy()->startofMonth()->startOfDay();
+                $endOfMonth = $startOfMonth->copy()->endOfMonth();
+            } else {
+                $startDate = Carbon::now();
+                $startOfMonth = $startDate->copy()->startOfMonth();
+                $endOfMonth = $startDate->copy()->endOfMonth();
+            }
+
+            if (!$request->id) {
+                $request->id = auth()->user()->id;
+            }
+
+            if ($request->itemsPerPage) {
+                $itemsPerPage = $request->itemsPerPage;
+            }
+            
+            if ($request->itemsPerPage == null) {
+                $itemsPerPage = 10;
+            }
+
+            $attendance =  Attendance::where('user_id', $request->id)
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->select('*', DB::raw("DATE_FORMAT(time_in, '%d') as formatted_time_in"))
+            ->paginate($itemsPerPage);
+            return $attendance;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'alert_type' => 'error',
+                'message' => $th->getMessage(),
+                'success' => false
+            ]);
+        }
     }
 }

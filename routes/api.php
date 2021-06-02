@@ -53,12 +53,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('updateComponentIndividual/{id}', [ProductComponentController::class ,'updateComponentIndividual']);
 
     Route::group(['prefix' => 'attendance'], function () {
+        Route::get('filterAttendances', [AttendanceController::class, 'filterAttendances']);
         Route::get('getTodayAttendance', [AttendanceController::class, 'getTodayAttendance']);
         Route::get('getFirstAndLastRecord', [AttendanceController::class, 'getFirstAndLastRecord']);
         Route::get('historyTable', [AttendanceController::class, 'historyTable']);
         Route::get('getAttendanceSummary', [AttendanceController::class, 'getAttendanceSummary']);
         Route::put('resetTimeOut/{id}', [AttendanceController::class, 'resetTimeOut']);
-
     });
     
     Route::group(['prefix' => 'dashboard'], function () {
@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'payroll'], function () {
         Route::get('getPayroll', [PayrollController::class, 'getPayroll']);
     });
-    
+
     Route::apiResources([
         'product' => ProductController::class,
         'designation'=> DesignationController::class,
