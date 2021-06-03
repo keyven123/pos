@@ -37,6 +37,14 @@
                         ></v-select>
                         </v-sheet>
                     </div>
+                    <v-spacer></v-spacer>
+                    <div class="col-md-1 d-flex justify-content-center">
+                        <div class="d-flex align-items-center"><button class="btn btn-sm btn-success" v-if="multiple" @click="approve()">Approved</button></div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center mr-3">
+                        <div class="d-flex align-items-center"><button class="btn btn-sm btn-primary" v-if="!multiple" @click="multiple = true, multiple_data = []">Multiple select</button></div>
+                        <div class="d-flex align-items-center"><button class="btn btn-sm btn-primary" v-if="multiple" @click="multiple = false">Single select</button></div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -51,6 +59,13 @@
                         'items-per-page-options': listSize
                     }"
                 >
+                <template v-slot:[`item.radio`]="{ item }" v-if="multiple">
+                    <div class="d-flex" v-if="!disabledApproved(item) && item.is_claimed == 0">
+                        <div class="align-items-center">
+                            <input type="checkbox" v-model="multiple_data" :value="item.id">
+                        </div>
+                    </div>
+                </template>
                 <template v-slot:[`item.type`]="{ item }">
                     <div class="d-flex">
                         <div class="align-items-center">{{attendanceType(item)}}</div>
@@ -76,8 +91,9 @@
                         <div class="align-items-center">{{item.is_approved == 0 ? "No" : "Yes"}}</div>
                     </div>
                 </template>
-                <template v-slot:[`item.actions`]="{ item }">
-                    <button class="btn btn-success btn-sm" title="Aprove" :disabled="disabledApproved(item)" @click="approve(item)">Approve</button>
+                <template v-slot:[`item.actions`]="{ item }" v-if="!multiple">
+                    <button class="btn btn-success btn-sm" title="Aprove" :disabled="item.is_claimed == 1" v-if="!disabledApproved(item)" @click="approve(item)">Approve</button>
+                    <button class="btn btn-danger btn-sm" title="Reset" :disabled="item.is_claimed == 1" v-if="item.is_approved == 1" @click="resetApproval(item)">Reset</button>
                 </template>
                 </v-data-table>
             </div>
@@ -103,9 +119,15 @@ mounted() {
 },
 data() {
     return {
+        multiple: false,
+        multiple_data: [],
+        data: {},
+        type: null,
+        types: ["Whole day", "Half day", "Not counted"],
         filter: {},
         first_load: true,
         headers: [
+            { text: '', value: 'radio' },
             { text: 'Type', value: 'type' },
             { text: 'Time in', value: 'time_in' },
             { text: 'Time out', value: 'time_out' },
@@ -128,7 +150,9 @@ data() {
 methods: {
     ...mapActions({ 
         filterAttendances: "filterAttendances",
-        getFirstAndLastRecord: "getFirstAndLastRecord"
+        getFirstAndLastRecord: "getFirstAndLastRecord",
+        approveAttendance: "approveAttendance",
+        revertAttendance: "revertAttendance"
 
     }),
     filteredAttendances(data) {
@@ -193,7 +217,86 @@ methods: {
         this.filteredAttendances(data)
     },
     approve(data) {
-        alert('bukas na')
+        Swal.fire({
+            title: 'Select attendance type',
+            input: 'select',
+            inputOptions: this.types,
+            inputPlaceholder: 'Select type',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                var type = this.types[value]
+                return new Promise((resolve) => {
+                    resolve()
+                    if(type) {
+                        if(data) {
+                            var config = {...this.data, data: data, type: type, multiple: false}
+                            this.approveAttendance(config)
+                                .then(response => {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: response.data.alert_type,
+                                        title: response.data.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                    var data = {
+                                        id: this.sendToChild.id
+                                    }
+                                    this.filteredAttendances(data)
+                                })
+                        } else {
+                            var ids = this.multiple_data
+                            var config = {...this.data, data: ids, type: type, multiple: true}
+                            this.approveAttendance(config)
+                                .then(response => {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: response.data.alert_type,
+                                        title: response.data.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                    this.multiple = false
+                                    var data = {
+                                        id: this.sendToChild.id
+                                    }
+                                    this.filteredAttendances(data)
+                                })
+                        }
+                    } else if (type == undefined ) {
+                        Swal.fire('You need to select 1 type')
+                    }
+                })
+            }
+        })
+    },
+    resetApproval(data) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are going to revert your approval",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                this.revertAttendance(data)
+                .then(response => {
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: response.data.alert_type,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    var data = {
+                        id: this.sendToChild.id
+                    }
+                    this.filteredAttendances(data)
+                })
+            }
+        })
     },
     attendanceType(data) {
         if (data.type == null) {
@@ -215,7 +318,7 @@ methods: {
         }
     },
     disabledApproved(data) {
-        if (data.type == null || data.time_out == null) {
+        if (data.is_approved == 1) {
             return true
         } else {
             return false

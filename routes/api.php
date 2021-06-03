@@ -59,6 +59,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('historyTable', [AttendanceController::class, 'historyTable']);
         Route::get('getAttendanceSummary', [AttendanceController::class, 'getAttendanceSummary']);
         Route::put('resetTimeOut/{id}', [AttendanceController::class, 'resetTimeOut']);
+        Route::put('approveAttendance/{id}', [AttendanceController::class, 'approveAttendance']);
+        Route::put('revertAttendance/{id}', [AttendanceController::class, 'revertAttendance']);
     });
     
     Route::group(['prefix' => 'dashboard'], function () {
@@ -77,7 +79,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'payroll'], function () {
         Route::get('getPayroll', [PayrollController::class, 'getPayroll']);
     });
-
+    
     Route::apiResources([
         'product' => ProductController::class,
         'designation'=> DesignationController::class,

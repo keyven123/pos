@@ -37,11 +37,11 @@ class PayrollController extends Controller
 
     public function store(PayrollRequest $request)
     {
-        $start = Carbon::parse($request->payroll_start);
+        $start = Carbon::parse($request->payroll_start)->startOfDay();
         $end = Carbon::parse($request->payroll_end)->endOfDay();
         $employees = Attendance::leftJoin('users', 'attendances.user_id', '=', 'users.id')
             ->whereBetween('attendances.created_at', [$start, $end])
-            ->where('user_id', '!=', 1)->where('is_claimed', 0)
+            ->where('user_id', '!=', 1)->where(['is_claimed' => 0, 'is_approved' => 1])
             ->select('users.id', 'users.first_name', 'users.last_name', 'users.rate', DB::raw('COUNT(attendances.id) as total_working_days'),
                 DB::raw("COUNT(CASE WHEN attendances.type = 'Whole day' THEN attendances.type END) as whole_day"),
                 DB::raw("COUNT(CASE WHEN attendances.type = 'Half day' THEN attendances.type END) as half_day"),

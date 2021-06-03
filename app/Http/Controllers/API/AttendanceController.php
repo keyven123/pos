@@ -222,4 +222,35 @@ class AttendanceController extends Controller
             ]);
         }
     }
+
+    public function approveAttendance(Request $request, $id)
+    {
+        if (!$request->multiple) {
+            $request = [
+                'type' => $request->type,
+                'is_approved' => 1
+            ];
+            return $this->updateOrCreateService->update($request, '\App\Models\Attendance', 'Attendance', $id);
+            // $attendance = Attendance::findOrFail($id)->update(['type' => $request->type, 'is_approved' => 1]);
+        } else {
+            $attendance = Attendance::whereIn('id', $request->data)
+            ->update(['type' => $request->type, 'is_approved'=> 1]);
+            if ($attendance) {
+                return response()->json(
+                    [
+                        'alert_type' => 'success',
+                        'data' => $attendance,
+                        'message' => "Attendance updated successfully",
+                        'success' => true
+                    ]
+                );
+            }
+        }
+    }
+
+    public function revertAttendance(Request $request, $id)
+    {
+        $request = ['is_approved' => 0, 'type' => null];
+        return $this->updateOrCreateService->update($request, '\App\Models\Attendance', 'Attendance', $id);
+    }
 }

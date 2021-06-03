@@ -63,6 +63,14 @@ const actions = {
         const response = await axios.get('api/attendance/getAttendanceSummary', config)
         commit("setSummary", response.data)
         return response.data
+    },
+    async approveAttendance({commit}, payload) {
+        const response = await axios.put(`api/attendance/approveAttendance/${payload.data.id}`, payload)
+        return response
+    },
+    async revertAttendance({commit}, payload) {
+        const response = await axios.put(`api/attendance/revertAttendance/${payload.id}`, payload)
+        return response
     }
 }
 

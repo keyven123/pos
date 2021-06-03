@@ -142,7 +142,8 @@ export default {
                     var data = {
                         id: response.data.id
                     }
-                    this.$store.dispatch("showPayroll", data)
+                    console.log(data)
+                    this.$store.dispatch("getPayroll", data)
                     .then(response => {
                         console.log(response)
                         this.loading = false;
@@ -163,7 +164,7 @@ export default {
         paginate(e) {
             if(e.itemsLength !== 0 && !this.first_load) {
                 this.filter = {...this.filter, page: e.page, itemsPerPage: e.itemsPerPage, id: this.id}
-                this.$store.dispatch("showPayroll", this.filter)
+                this.$store.dispatch("getPayroll", this.filter)
                 .then(response => {
                     this.loading = false
                 })
@@ -179,7 +180,7 @@ export default {
             this.loading = true
             this.filter.page = 1
             this.filter.search = this.search
-            this.$store.dispatch("showPayroll", this.filter)
+            this.$store.dispatch("getPayroll", this.filter)
             .then(response => {
                 this.totalPayrolls = response.total;
                 this.options.page = response.current_page
