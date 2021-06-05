@@ -16,7 +16,6 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return redirect('/login');
-    // return view('welcome');
 });
 
 Route::view('/queue', 'pages.queue.queue');
@@ -24,5 +23,4 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
 
-Route::get('/{any_path?}', [HomeController::class, 'index'])->where('any_path', '(.*)');
 

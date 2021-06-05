@@ -142,10 +142,8 @@ export default {
                     var data = {
                         id: response.data.id
                     }
-                    console.log(data)
                     this.$store.dispatch("getPayroll", data)
                     .then(response => {
-                        console.log(response)
                         this.loading = false;
                         this.totalPayrolls = response.total;
                         this.options = {...this.options, itemsPerPage: response.per_page}
