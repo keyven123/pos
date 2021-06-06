@@ -35,7 +35,7 @@
                     <div class="total-revenue">
                         <div>
                             <h4>{{type_filter=='Gross' ? formatCurrency(total.data) : total.data}}</h4>
-                            <label><span class="bg-success"></span>{{type_filter}}</label>
+                            <label><span class="bg-primary"></span>{{type_filter}}</label>
                         </div>
                     </div>
                     <div id="bar" class="sales-bar mt-4">
@@ -141,7 +141,7 @@ export default {
             chartDataOptions: {
                 legend: { position: 'bottom', alignment: 'start' },
                 chartArea:{width:'85%', height: '68%'},
-                colors: ['#22c02c','#0162e8', '#ee335e']
+                colors: ['#0162e8', '#22c02c', '#ee335e']
             },
             chartDataOptions2: {
                 legend: {position: 'none'},

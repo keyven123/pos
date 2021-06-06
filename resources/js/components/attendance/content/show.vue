@@ -479,10 +479,15 @@ export default {
             }
         },
         timeOutExist() {
+            var hour = today.getHours()
             if (this.attendanceNow && this.attendanceNow.hasOwnProperty('time_out') && this.attendanceNow.time_out) {
                 return true
             } else {
-                return false
+                if(hour >= 8 && this.attendanceNow.time_in !== null && this.attendanceNow.hasOwnProperty('time_in')) {
+                    return false
+                } else {
+                    return true
+                }
             }
         }
     }

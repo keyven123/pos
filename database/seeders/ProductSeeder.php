@@ -19,7 +19,7 @@ class ProductSeeder extends Seeder
     {
         //to run this seeder php artisan db:seed --class=ProductSeeder
         //Categories
-        $categories = ['MILKTEA', 'FRUITEA', 'FRAPPE', 'BLENDED'];
+        $categories = ['MILKTEA', 'FRUITEA', 'FRAPPE', 'BLENDED', 'SINKERS'];
 
         foreach ($categories as $category) {
             Category::create([
@@ -159,7 +159,39 @@ class ProductSeeder extends Seeder
             
         ];
 
+
         foreach ($variant_1 as $var) {
+            Variant::create([
+                'product_id' => $var['product_id'],
+                'variation_name' => $var['variation_name'],
+                'variation_price' => $var['variation_price']
+            ]);
+        }
+
+        //Sinkers
+        $sinkers = [
+            'Tapioca Pearl', 'Nata Crystal', 'Poppong Boba', 'Rainbow Jelly', 'Coffee Jelly'
+        ];
+        
+        foreach ($sinkers as $sinker) {
+            Product::create([
+                'category_id' => 5,
+                'name' => $sinker,
+                'description' => $sinker,
+                'barcode' => $sinker,
+                'variation' => 1,
+            ]);
+        }
+
+        $sink_var = [
+            ['product_id' => 36, 'variation_name' => 'Free', 'variation_price' => 0],
+            ['product_id' => 37, 'variation_name' => 'Free', 'variation_price' => 0],
+            ['product_id' => 38, 'variation_name' => 'Free', 'variation_price' => 0],
+            ['product_id' => 39, 'variation_name' => 'Free', 'variation_price' => 0],
+            ['product_id' => 40, 'variation_name' => 'Free', 'variation_price' => 0],
+        ];
+
+        foreach ($sink_var as $var) {
             Variant::create([
                 'product_id' => $var['product_id'],
                 'variation_name' => $var['variation_name'],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -18,9 +19,9 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::view('/queue', 'pages.queue.queue');
+Route::view('/queue', 'pages.queue.queue')->middleware('auth');
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
 
-
+Route::get('/{any_path?}', [Controller::class, 'default'])->where('any_path', '(.*)');

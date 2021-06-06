@@ -149,10 +149,10 @@ class DashboardController extends Controller
                     ->leftJoin('products as p', 'p.id', '=', 'ch.product_id')
                     ->select('p.name as name', DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
-                    ->orderBy('total_sales', 'ASC')
+                    ->orderBy('total_sales', 'DESC')
                     ->take(10)
                     ->get();
-            } else if ($request->type == 'Category') {
+        } else if ($request->type == 'Category') {
                 $cart_histories = DB::table('cart_histories as ch')
                     ->where('ch.status', 2)
                     ->whereBetween('ch.created_at', [$start, $end])
@@ -160,7 +160,7 @@ class DashboardController extends Controller
                     ->leftJoin('categories as c', 'c.id', '=', 'p.category_id')
                     ->select('c.name as name', DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
-                    ->orderBy('total_sales', 'ASC')
+                    ->orderBy('total_sales', 'DESC')
                     ->take(10)
                     ->get();
             } else {
@@ -170,7 +170,7 @@ class DashboardController extends Controller
                     ->leftJoin('users as u', 'u.id', '=', 'ch.user_id')
                     ->select(DB::raw("CONCAT(u.first_name,' ',u.last_name) AS name"), DB::raw('SUM(ch.price*ch.quantity) as total_sales'))
                     ->groupBy('name')
-                    ->orderBy('total_sales', 'ASC')
+                    ->orderBy('total_sales', 'DESC')
                     ->take(10)
                     ->get();
             }

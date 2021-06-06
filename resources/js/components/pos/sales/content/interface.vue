@@ -302,11 +302,11 @@ export default {
                         products.push(product)
                     }
                 })
-                if(products.length < 4) {
+                if(products.length < 7) {
                     products.forEach(product => {
                         this.filtered_products.push({product,flex:4,height:'200px'})
                     })
-                } else if(products.length == 4) {
+                } else if(products.length >= 7 && products.length < 12) {
                     products.forEach(product => {
                         this.filtered_products.push({product,flex:3,height:'150px'})
                     })
