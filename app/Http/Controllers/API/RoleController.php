@@ -58,6 +58,6 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        //
+        return $this->updateOrCreateService->delete($id, '\Spatie\Permission\Models\Role', 'Role');
     }
 }

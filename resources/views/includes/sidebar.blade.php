@@ -138,9 +138,9 @@
                         @can('role-view')
                         <li><router-link class="slide-item" to="/roles">Roles</router-link></li>
                         @endcan
-                        @can('permission-view')
+                        <!-- @can('permission-view')
                         <li><router-link class="slide-item" to="/permissions">Permissions </router-link></li>
-                        @endcan
+                        @endcan -->
                     </ul>
                 </li>
                 @endcan

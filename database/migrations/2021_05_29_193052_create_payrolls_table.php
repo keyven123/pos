@@ -19,8 +19,13 @@ class CreatePayrollsTable extends Migration
             $table->date('payroll_start');
             $table->date('payroll_end');
             $table->float('amount')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
         });
     }
 

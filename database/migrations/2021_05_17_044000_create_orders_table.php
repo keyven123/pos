@@ -19,10 +19,14 @@ class CreateOrdersTable extends Migration
             $table->string('ref_no');
             $table->tinyInteger('status')->default(0);
             $table->float('amount');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
         });
     }
 

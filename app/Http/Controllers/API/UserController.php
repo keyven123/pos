@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Services\UpdateOrCreateService;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -46,7 +47,7 @@ class UserController extends Controller
     {
         $response = $this->updateOrCreateService->create($request->validated(), '\App\Models\User', 'User');
         $user = User::where(['username' => $request->username, 'email' => $request->email])->first();
-        $user->update(['password' => bcrypt($request->password)]);
+        $user->update(['password' => bcrypt($request->password), 'created_at' => Auth::user()->id]);
         $user->assignRole($request->designation_id);
         return $response;
     }
@@ -77,6 +78,7 @@ class UserController extends Controller
                 $data = \array_diff_key($data, ['password' => null]);
             } else {
                 $data = $request->validated();
+                $data['updated_by'] = Auth::user()->id;
             }
             $response =  $this->updateOrCreateService->update($data, '\App\Models\User', 'User', $id);
             if ($request->password !== null) {

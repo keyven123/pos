@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'username' => 'superadmin',
             'designation_id' => 1,
             'contact' => 1234567890,
-            'password' => bcrypt('jollitea2021'),
+            'password' => bcrypt('1234qwer'),
             ]
         );
 

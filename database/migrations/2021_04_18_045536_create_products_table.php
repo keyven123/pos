@@ -23,10 +23,14 @@ class CreateProductsTable extends Migration
             $table->float('price')->nullable();
             $table->tinyInteger('is_available')->default(true);
             $table->tinyInteger('variation');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
         });
     }
 

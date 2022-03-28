@@ -18,11 +18,15 @@ class CreatePayrollListsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('payroll_id');
             $table->float('amount');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('payroll_id')->references('id')->on('payrolls');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
         });
     }
 

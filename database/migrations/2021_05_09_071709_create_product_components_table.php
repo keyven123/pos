@@ -20,12 +20,16 @@ class CreateProductComponentsTable extends Migration
             $table->unsignedbigInteger('variant_id')->nullable();
             $table->string('unit');
             $table->float('quantity', 8, 3);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('variant_id')->references('id')->on('variants');
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('ingredient_id')->references('id')->on('ingredients');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('SET NULL');
         });
     }
 
