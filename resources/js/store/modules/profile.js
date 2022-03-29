@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const state = {
     profile: [],
+    image: [],
 }
 
 const getters = {
@@ -18,10 +19,15 @@ const actions = {
         const response = await axios.put('api/user/' + payload.id, payload)
         return response.data
     },
+    async uploadProfile({getters}, payload) {
+        const response = await axios.post('api/profile', payload)
+        return response.data
+    }
 }
 
 const mutations = {
-    setProfile: (state, profile) => state.profile = profile
+    setProfile: (state, profile) => state.profile = profile,
+    setImage: (state, image) => state.image = image
 }
 
 export default {

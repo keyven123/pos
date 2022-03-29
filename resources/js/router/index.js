@@ -17,6 +17,7 @@ import Profile from '../components/profile/Profile'
 import Employee from '../components/employee/Employee'
 import Attendance from '../components/attendance/Attendance'
 import Payroll from '../components/payroll/Payroll'
+import Settings from '../components/settings/Settings'
 import Queue from '../components/queue/Queue'
 import {store} from '../store'
 
@@ -101,6 +102,11 @@ let routes = [
         path: '/payroll',
         component: Payroll,
         name: 'Payroll'
+    },
+    {
+        path: '/settings',
+        component: Settings,
+        name: 'Settings'
     },
 ];
 

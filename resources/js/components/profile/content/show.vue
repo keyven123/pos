@@ -126,7 +126,34 @@
                 </button>
             </div>
             <div class="modal-body">
-                <a href="#"><img v-for="(image, index) in images" :key="index" :src="image.image" style="width: 114px; heigh:114px" @click="changeImage(image.image)"></a>
+                <a href="#"><img v-for="(image, index) in images" :key="index" :src="image.image" class="m-1" style="width: 114px; heigh:114px" @click="changeImage(image.image)"></a>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#profileImage">Upload photo</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal fade" id="profileImage" tabindex="-1" role="dialog" aria-labelledby="profileImageLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                <form @submit.prevent="UploadImage()">
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label" for="img">Change User Profile</label>
+                        <div class="col-sm-12">
+                            <input @change="userImage" accept="image/*" type="file" name="image" ref="image" id="image">
+                        </div>
+                    </div>
+                    <div id="preview">
+                        <img v-if="url" :src="url" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary text-white">Save changes</button>
+                    </div>
+                </form>
             </div>
             </div>
         </div>
@@ -139,10 +166,13 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'Show',
     mounted() {
-        this.getProfileInfo()
+        this.getProfileInfo(),
+        this.attachment = null
     },
     data() {
         return {
+            attachment: null,
+            url: '',
             dialog: false,
             user: [],
             role: null,
@@ -157,6 +187,7 @@ export default {
             image: null,
             password: null,
             confirm_password: null,
+            profile_image: null,
             errors: {},
             search: '',
             images: [
@@ -267,18 +298,19 @@ export default {
                     username: this.username,
                     password: this.password
                 }
-                this.$store.dispatch("updateProfile", data)
-                .then(response => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                        }).then((result) => {
-                        if (result.isConfirmed) {
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    // text: "You won't be able to revert this!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$store.dispatch("updateProfile", data)
+                        .then(response => {
                             if (response.success) {
                                 Swal.fire({
                                 position: 'top-end',
@@ -291,11 +323,11 @@ export default {
                             this.getProfileInfo()
                             this.errors = {}
                             this.change_password = false
-                        }
-                    })
-                }).catch(error => {
-                    this.errors = error.response.data.errors
-                    Swal.fire('Error', error.response.data.message , 'error')
+                        }).catch(error => {
+                            this.errors = error.response.data.errors
+                            Swal.fire('Error', error.response.data.message , 'error')
+                        })
+                    }
                 })
             } else {
                 this.errors = {}
@@ -303,7 +335,45 @@ export default {
                 this.errors.confirm_password = "Mismatch Password"
                 Swal.fire('Error', 'Password mismatch' , 'error')
             }
-        }
+        },
+
+        UploadImage(){
+                let fd = new FormData();
+                fd.append('profile_image', this.attachment);
+                fd.append('id',this.id)
+                this.$store.dispatch("uploadProfile", fd)
+                .then(response => {
+                    if(response.success){
+                        $('#profileImage').modal('hide');
+                        $('.modal-backdrop').remove();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Profile Image updated Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                        this.getProfileInfo()
+                    } else {
+                        $('#profileImage').modal('hide');
+                        $('.modal-backdrop').remove();
+                        Swal.fire('Error', response.message , 'error')
+                    }
+                }).catch(error => {
+                    this.errors = error.response.data.errors
+                    Swal.fire('Error', error.response.data.message , 'error')
+                })
+            },
+            userImage(e){
+                let file = e.target.files[0];
+                this.attachment = file;
+                this.url = URL.createObjectURL(file);
+                let reader = new FileReader();
+                    reader.onloadend = (file) => {
+                        this.profile_image = reader.result;
+                    }
+                    reader.readAsDataURL(file);
+            },
         
     },
     computed: {

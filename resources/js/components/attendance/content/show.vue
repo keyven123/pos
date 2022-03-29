@@ -9,8 +9,8 @@
                         <v-card>
                             <v-row justify="space-around">
                             <v-col md="5">
-                                <h4>Time in:</h4>
-                                <h4 v-if="attendanceNow && attendanceNow.hasOwnProperty('time_in')">{{attendanceNow.time_in|completeDate}}</h4>
+                                <h4 class="ml-1">Time in:</h4>
+                                <h4 class="ml-1" v-if="attendanceNow && attendanceNow.hasOwnProperty('time_in')">{{attendanceNow.time_in|completeDate}}</h4>
                             </v-col>
                             <v-col md="5">
                                 <h4>Time out:</h4>
@@ -22,7 +22,7 @@
                     <v-col md="6">
                         <v-card>
                             <v-row justify="space-around">
-                            <v-col md="5">
+                            <v-col class="m-2" md="5">
                                 <h4>Time in</h4>
                                 <v-btn
                                 :disabled="timeInExist"
@@ -33,7 +33,7 @@
                                 Click here
                                 </v-btn>
                             </v-col>
-                            <v-col md="5">
+                            <v-col class="m-2" md="5">
                                 <h4>Time out</h4>
                                 <v-btn
                                 :disabled="timeOutExist"

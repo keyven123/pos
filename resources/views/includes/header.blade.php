@@ -9,8 +9,8 @@
                 <!-- <a href="#"><img src="../../assets/img/brand/favicon.png" class="dark-logo-2" alt="logo"></a> -->
             </div>
             <div class="app-sidebar__toggle" data-toggle="sidebar">
-                <a class="close-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
-                <a class="open-toggle" href="#"><i class="header-icon fe fe-align-left"></i></a>
+                <a class="open-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
+                <a class="close-toggle" href="#"><i class="header-icon fe fe-align-left"></i></a>
             </div>
             <!-- <div class="main-header-center ml-3 d-sm-none d-md-none d-lg-block">
                 <input class="form-control" placeholder="Search for anything..." type="search"> <button class="btn"><i class="fas fa-search d-none d-md-block"></i></button>
@@ -267,8 +267,8 @@
                             <i class="bx bx-log-out"></i> {{ __('Logout') }}
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-							@csrf
-						</form>
+                            @csrf
+                        </form>
                     </div>
                 </div>
                 <!-- <div class="dropdown main-header-message right-toggle">
