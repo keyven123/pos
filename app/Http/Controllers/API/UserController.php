@@ -8,6 +8,7 @@ use App\Http\Services\UpdateOrCreateService;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -73,6 +74,7 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         try {
+            $beforeUpdate = User::findOrfail($id);
             if ($request->password == null) {
                 $data = $request->all();
                 $data = \array_diff_key($data, ['password' => null]);
@@ -85,6 +87,13 @@ class UserController extends Controller
                 $user = $response['data'];
                 $user = User::findOrfail($user->id);
                 $user->update(['password' => bcrypt($data['password'])]);
+            }
+
+            if ($request->image && !strpos($beforeUpdate->image, 'images/profile')) {
+                $path = public_path()."/".$beforeUpdate->image;
+                if(File::exists(str_replace("\\", '/', $path))){
+                    unlink(str_replace("\\", '/', $path));
+                }
             }
             return $response;
         } catch (\Throwable $th) {
