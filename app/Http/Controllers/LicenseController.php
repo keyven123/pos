@@ -54,6 +54,8 @@ class LicenseController extends Controller
             $license    = $license->update(['value' => $request['license']]);
             $trial      = $trial->update(['value' => '1']);
             $trial_end  = $trial_end->update(['value' => now()->addYear(1)->format('Y-m-d')]);
+
+            unlink(public_path() . "/files/licensekey.csv");
         }
 
         return redirect('/login');
