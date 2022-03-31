@@ -370,6 +370,21 @@
         'url' => NULL,
         'endpoint' => NULL,
       ),
+      'local_file' => 
+      array (
+        'driver' => 'local',
+        'root' => 'C:\\xampp\\htdocs\\Project\\POS\\public\\/files',
+      ),
+      'file_host' => 
+      array (
+        'driver' => 'ftp',
+        'host' => '',
+        'username' => '',
+        'password' => '',
+        'port' => 21,
+        'root' => '/',
+        'timeout' => 60,
+      ),
     ),
     'links' => 
     array (

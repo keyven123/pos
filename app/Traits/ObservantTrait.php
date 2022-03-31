@@ -12,8 +12,8 @@ trait ObservantTrait
         static::creating(function($model)
         {
             $user = Auth::user();
-            $model->created_by = $user->id;
-            $model->updated_by = $user->id;
+            $model->created_by = $user->id ?? null;
+            $model->updated_by = $user->id  ?? null;
         });
         static::updating(function($model)
         {

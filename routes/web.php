@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LicenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,9 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+// Route::view('/license', 'pages.license.license');
+Route::get('/license', [LicenseController::class, 'index']);
+Route::post('/license', [LicenseController::class, 'store']);
 Route::view('/queue', 'pages.queue.queue')->middleware('auth');
 Auth::routes();
 
