@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    use HasFactory, ObservantTrait;
+    use HasFactory;
+
+    protected $guarded = [];
+
+    public $timestamps = false;
 }

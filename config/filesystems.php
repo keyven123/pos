@@ -52,6 +52,21 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'local_file' => [
+            'driver' => 'local',
+            'root' => public_path('/files')
+        ],
+
+        'file_host' => [
+            'driver' => 'ftp',
+            'host' => '',
+            'username' => '',
+            'password' => '',
+            'port' => 21,
+            'root' => '/',
+            'timeout' => 60,
+        ],
+
     ],
 
     /*
