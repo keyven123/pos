@@ -10,7 +10,7 @@
         <meta name="Keywords" content="delivery, service, services, food near me, restaurants, pos"/>
 
         <!-- Title -->
-        <title> Jollitea POS </title>
+        <title> {{$app->value}} </title>
 
         <!-- Logo -->
         <link rel="icon" href="{!! asset('images/Jollitea.jpg') !!}" type="image/x-icon"/>
@@ -78,7 +78,7 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
-                                        <h1 data-aos="fade-up" class="aos-init aos-animate">Welcome to Jollitea!</h1>
+                                        <h1 data-aos="fade-up" class="aos-init aos-animate">Welcome to {{$app->value}}!</h1>
                                         <!-- <h2 data-aos="fade-up" data-aos-delay="400" class="aos-init aos-animate">We provide services to serve you. Download our App</h2>
                                         <div class="row">
                                             <div class="col-lg-6 text-left">
@@ -109,7 +109,7 @@
                                 <div class="row">
                                     <div class="col-md-10 col-lg-10 col-xl-9 mx-auto">
                                         <div class="card-sigin">
-                                            <div class="mb-5 d-flex"> <a href="/"><img src="images/jollitea-6.jpg" class="img-fluid" alt="Jollitea logo"></a></div>
+                                            <div class="mb-5 d-flex"> <a href="/"><img src="{{$banner->value}}" class="img-fluid" alt="POS logo"></a></div>
                                             <div class="card-sigin">
                                                 <div class="main-signup-header">
                                                 <!-- <div  class="d-flex justify-content-center"> -->

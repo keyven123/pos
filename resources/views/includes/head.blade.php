@@ -3,15 +3,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <meta name="Description" content="Bootstrap Responsive Admin Web Dashboard HTML5 Template">
-<meta name="Author" content="Spruko Technologies Private Limited">
+<meta name="Author" content="Keys Technologies">
 <meta name="Keywords" content="admin,admin dashboard,admin dashboard template,admin panel template,admin template,admin theme,premium,premium quality, delivery, service, services, food near me, restaurants, pos"/>
 
 <!-- Title -->
-<title> Jollitea -  Point of Sale and HR management system </title>
+<title> Point of Sale and basic HR management system </title>
 
 
 <!-- Favicon -->
-<link rel="icon" href="{!! asset('images/Jollitea.jpg') !!}" type="image/x-icon"/>
+<link rel="icon" href="{!! asset('images/logo.png') !!}" type="image/x-icon"/>
 
 <!-- Icons css -->
 <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">

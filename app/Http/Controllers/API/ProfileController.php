@@ -37,10 +37,10 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         if ($request->file('profile_image')) {
-            $file = $request->file('profile_image') ;
-            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION) ;
-            $fileName = strtotime('now').'.'.$extension ;
-            $destinationPath = public_path().'/images/user' ;
+            $file = $request->file('profile_image');
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $fileName = strtotime('now').'.'.$extension;
+            $destinationPath = public_path().'/images/user';
             $file->move($destinationPath,$fileName);
             $data = [
                 'image' => 'images/user/'.$fileName
@@ -56,11 +56,13 @@ class ProfileController extends Controller
                 }
             }
         } else {
-            return [
-                'success' => false,
-                'message' => "Image is required.",
-                'alert_type' => 'failed',
-            ];
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Image is required.",
+                    'alert_type' => 'failed',
+                ], 422
+            );
         }
 
         return $response;

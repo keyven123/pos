@@ -19,6 +19,7 @@ use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\ProductComponentController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -98,5 +99,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         'employee' => EmployeeController::class,
         'attendance' => AttendanceController::class,
         'payroll' => PayrollController::class,
+        'setting' => SettingController::class,
     ]);
 });

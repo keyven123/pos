@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\LoginHistory;
+use App\Models\Setting;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -72,6 +72,20 @@ class LoginController extends Controller
 
 
     // }
+
+    public function showLoginForm()
+    {
+        if (auth()->user()) {
+            return redirect('/dashboard');
+        }
+
+        $banner = Setting::where('attribute', 'banner')->first();
+        $app = Setting::where('attribute', 'app_name')->first();
+        $logo = Setting::where('attribute', 'logo')->first();
+
+        return view('auth.login', compact('banner', 'app', 'logo'));
+    }
+
     public function login(Request $request)
     {   
         $input = $request->all();
