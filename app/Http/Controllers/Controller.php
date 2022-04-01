@@ -25,7 +25,25 @@ class Controller extends BaseController
             }
             return view('pages.dashboard.dashboard');
         }
-        return redirect('/login');
 
+        $banner = Setting::where('attribute', 'banner')->first();
+        $app = Setting::where('attribute', 'app_name')->first();
+        $logo = Setting::where('attribute', 'logo')->first();
+        
+        return view('auth.login', compact('banner', 'app', 'logo'));
+
+    }
+
+    public function loginView()
+    {
+        if (auth()->user()) {
+            return redirect('/dashboard');
+        }
+
+        $banner = Setting::where('attribute', 'banner')->first();
+        $app = Setting::where('attribute', 'app_name')->first();
+        $logo = Setting::where('attribute', 'logo')->first();
+
+        return view('auth.login', compact('banner', 'app', 'logo'));
     }
 }

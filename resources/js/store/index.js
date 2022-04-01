@@ -21,6 +21,7 @@ import profile from './modules/profile'
 import employee from './modules/employee'
 import attendance from './modules/attendance'
 import payroll from './modules/payroll'
+import setting from './modules/setting'
 
 Vue.use(Vuex);
 Vue.prototype.$http = Axios
@@ -62,7 +63,8 @@ export const store = new Vuex.Store({
         profile,
         employee,
         attendance,
-        payroll
+        payroll,
+        setting
     }
 
 });
